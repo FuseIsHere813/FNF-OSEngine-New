@@ -3,10 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
-import PlayState;
-#if sys
-import sys.FileSystem;
-#end
 
 using StringTools;
 
@@ -34,6 +30,9 @@ class StrumNote extends FlxSprite
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteData = leData;
+		this.player = player;
+		this.noteData = leData;
+		super(x, y);
 
 		if (PlayState.SONG.swapStrumLines == true) {
 			if (player == 1) {
@@ -43,34 +42,8 @@ class StrumNote extends FlxSprite
 			}
 		}
 
-		this.player = player;
-		this.noteData = leData;
-		super(x, y);
-
 		var skin:String = 'NOTE_assets';
-		if (PlayState.SONG.arrowSkin == null || PlayState.SONG.arrowSkin.length <= 1) {
-			if(ClientPrefs.noteSkinSettings == 'Clasic') {
-				skin = 'NOTE_assets';
-			} else if (ClientPrefs.noteSkinSettings == 'Circle') {
-				skin = 'NOTE_assets_circle';
-			} else {
-				skin = 'NOTE_assets';// for preventing crashes
-			}
-		}
-		if (PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
-
-		#if sys
-		if (this.player == 1) {
-			if (FileSystem.exists(Paths.modsImages("NOTE_" + PlayState.SONG.player1 + '_assets'))) {
-				skin = "NOTE_" + PlayState.SONG.player1 + '_assets';
-			}
-		} else {
-			if (FileSystem.exists(Paths.modsImages("NOTE_" + PlayState.SONG.player2 + '_assets'))) {
-				skin = "NOTE_" + PlayState.SONG.player2 + '_assets';
-			}
-		}
-		#end
-		//trace(PlayState.SONG.arrowSkin); мама я в ютубе
+		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
 		texture = skin; //Load texture and anims
 
 		scrollFactor.set();

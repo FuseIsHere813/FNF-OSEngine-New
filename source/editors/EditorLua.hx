@@ -13,7 +13,12 @@ import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel > "5.3.0")
+import flixel.sound.FlxSound;
+#end
 import flixel.util.FlxTimer;
 import flixel.FlxSprite;
 import flixel.FlxCamera;

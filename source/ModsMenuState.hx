@@ -15,7 +15,12 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import lime.utils.Assets;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel > "5.3.0")
+import flixel.sound.FlxSound;
+#end
 import openfl.utils.Assets as OpenFlAssets;
 import sys.io.File;
 import sys.FileSystem;
@@ -329,9 +334,10 @@ class ModsMenuState extends MusicBeatState
 			var newMod:ModMetadata = new ModMetadata(values[0]);
 			mods.push(newMod);
 
-			newMod.alphabet = new Alphabet(0, 0, mods[i].name, true, false, 0.05);
+			newMod.alphabet = new Alphabet(0, 0, mods[i].name, true);
 			var scale:Float = Math.min(840 / newMod.alphabet.width, 1);
-			newMod.alphabet = new Alphabet(0, 0, mods[i].name, true, false, 0.05, scale);
+			newMod.alphabet.scaleX = scale;
+			newMod.alphabet.scaleY = scale;
 			newMod.alphabet.y = i * 150;
 			newMod.alphabet.x = 310;
 			add(newMod.alphabet);
@@ -471,7 +477,7 @@ class ModsMenuState extends MusicBeatState
 			noModsTxt.alpha = 1 - Math.sin((Math.PI * noModsSine) / 180);
 		}
 
-		if((canExit && controls.BACK) || (canExit && FlxG.mouse.justPressedRight))
+		if(canExit && controls.BACK)
 		{
 			if(colorTween != null) {
 				colorTween.cancel();
@@ -498,12 +504,12 @@ class ModsMenuState extends MusicBeatState
 			}
 		}
 
-		if(controls.UI_UP_P || FlxG.mouse.wheel > 0)
+		if(controls.UI_UP_P)
 		{
 			changeSelection(-1);
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 		}
-		if(controls.UI_DOWN_P || FlxG.mouse.wheel < 0)
+		if(controls.UI_DOWN_P)
 		{
 			changeSelection(1);
 			FlxG.sound.play(Paths.sound('scrollMenu'));

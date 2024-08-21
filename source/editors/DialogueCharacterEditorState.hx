@@ -11,7 +11,12 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel > "5.3.0")
+import flixel.sound.FlxSound;
+#end
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
@@ -29,6 +34,7 @@ import DialogueBoxPsych;
 import flixel.FlxCamera;
 import flixel.group.FlxSpriteGroup;
 import lime.system.Clipboard;
+import Alphabet;
 #if sys
 import sys.io.File;
 #end
@@ -38,7 +44,7 @@ using StringTools;
 class DialogueCharacterEditorState extends MusicBeatState
 {
 	var box:FlxSprite;
-	var daText:Alphabet = null;
+	var daText:TypedAlphabet = null;
 
 	private static var TIP_TEXT_MAIN:String =
 	'JKLI - Move camera (Hold Shift to move 4x faster)
@@ -62,7 +68,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 	var animText:FlxText;
 
 	var camGame:FlxCamera;
-	var camOther:FlxCamera;
+	var camHUD:FlxCamera;
 
 	var mainGroup:FlxSpriteGroup;
 	var hudGroup:FlxSpriteGroup;
@@ -74,17 +80,15 @@ class DialogueCharacterEditorState extends MusicBeatState
 	var curAnim:Int = 0;
 
 	override function create() {
-		Alphabet.setDialogueSound();
-
 		persistentUpdate = persistentDraw = true;
 		camGame = new FlxCamera();
-		camOther = new FlxCamera();
+		camHUD = new FlxCamera();
 		camGame.bgColor = FlxColor.fromHSL(0, 0, 0.5);
-		camOther.bgColor.alpha = 0;
+		camHUD.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camOther);
-		FlxCamera.defaultCameras = [camOther];
+		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 		
 		mainGroup = new FlxSpriteGroup();
 		mainGroup.cameras = [camGame];
@@ -126,20 +130,20 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 		tipText = new FlxText(10, 10, FlxG.width - 20, TIP_TEXT_MAIN, 8);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		tipText.cameras = [camOther];
+		tipText.cameras = [camHUD];
 		tipText.scrollFactor.set();
 		add(tipText);
 
 		offsetLoopText = new FlxText(10, 10, 0, '', 32);
 		offsetLoopText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		offsetLoopText.cameras = [camOther];
+		offsetLoopText.cameras = [camHUD];
 		offsetLoopText.scrollFactor.set();
 		add(offsetLoopText);
 		offsetLoopText.visible = false;
 
 		offsetIdleText = new FlxText(10, 46, 0, '', 32);
 		offsetIdleText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		offsetIdleText.cameras = [camOther];
+		offsetIdleText.cameras = [camHUD];
 		offsetIdleText.scrollFactor.set();
 		add(offsetIdleText);
 		offsetIdleText.visible = false;
@@ -147,11 +151,17 @@ class DialogueCharacterEditorState extends MusicBeatState
 		animText = new FlxText(10, 22, FlxG.width - 20, '', 8);
 		animText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		animText.scrollFactor.set();
+		animText.cameras = [camHUD];
 		add(animText);
 
 		reloadCharacter();
 		updateTextBox();
-		reloadText();
+
+		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y, '', 0.05, false);
+		daText.scaleX = 0.7;
+		daText.scaleY = 0.7;
+		daText.text = DEFAULT_TEXT;
+		hudGroup.add(daText);
 
 		addEditorBox();
 		FlxG.mouse.visible = true;
@@ -171,7 +181,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		UI_typebox.x = 900;
 		UI_typebox.y = FlxG.height - UI_typebox.height - 50;
 		UI_typebox.scrollFactor.set();
-		UI_typebox.camera = camGame;
+		UI_typebox.camera = camHUD;
 		addTypeUI();
 		add(UI_typebox);
 
@@ -184,7 +194,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		UI_mainbox.x = UI_typebox.x + UI_typebox.width;
 		UI_mainbox.y = FlxG.height - UI_mainbox.height - 50;
 		UI_mainbox.scrollFactor.set();
-		UI_mainbox.camera = camGame;
+		UI_mainbox.camera = camHUD;
 		addAnimationsUI();
 		addCharacterUI();
 		add(UI_mainbox);
@@ -415,18 +425,6 @@ class DialogueCharacterEditorState extends MusicBeatState
 	}
 
 	private static var DEFAULT_TEXT:String = 'Lorem ipsum dolor sit amet';
-	function reloadText() {
-		if(daText != null) {
-			daText.killTheTimer();
-			daText.kill();
-			hudGroup.remove(daText);
-			daText.destroy();
-		}
-		daText = new Alphabet(0, 0, DEFAULT_TEXT, false, true, 0.05, 0.7);
-		daText.x = DialogueBoxPsych.DEFAULT_TEXT_X;
-		daText.y = DialogueBoxPsych.DEFAULT_TEXT_Y;
-		hudGroup.add(daText);
-	}
 
 	function reloadCharacter() {
 		var charsArray:Array<DialogueCharacter> = [character, ghostLoop, ghostIdle];
@@ -503,6 +501,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 	var lastTab:String = 'Character';
 	var transitioning:Bool = false;
 	override function update(elapsed:Float) {
+		MusicBeatState.camBeat = FlxG.camera;
 		if(transitioning) {
 			super.update(elapsed);
 			return;
@@ -537,8 +536,8 @@ class DialogueCharacterEditorState extends MusicBeatState
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
 			if(FlxG.keys.justPressed.SPACE && UI_mainbox.selected_tab_id == 'Character') {
 				character.playAnim(character.jsonFile.animations[curAnim].anim);
+				daText.resetDialogue();
 				updateTextBox();
-				reloadText();
 			}
 
 			//lots of Ifs lol get trolled
@@ -643,7 +642,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 					offsetIdleText.visible = false;
 					animText.visible = true;
 					updateTextBox();
-					reloadText();
+					daText.resetDialogue();
 					
 					if(curAnim < 0) curAnim = character.jsonFile.animations.length - 1;
 					else if(curAnim >= character.jsonFile.animations.length) curAnim = 0;
@@ -726,7 +725,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 					reloadAnimationsDropDown();
 					updateCharTypeBox();
 					updateTextBox();
-					reloadText();
+					daText.resetDialogue();
 					imageInputText.text = character.jsonFile.image;
 					scaleStepper.value = character.jsonFile.scale;
 					xStepper.value = character.jsonFile.position[0];

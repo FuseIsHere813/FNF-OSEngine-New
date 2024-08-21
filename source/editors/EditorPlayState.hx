@@ -13,7 +13,12 @@ import flixel.tweens.FlxTween;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel > "5.3.0")
+import flixel.sound.FlxSound;
+#end
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
@@ -803,7 +808,7 @@ class EditorPlayState extends MusicBeatState
 		var rating:FlxSprite = new FlxSprite();
 		//var score:Int = 350;
 
-		var daRating:String = "sick";
+		var daRating:String = "perfect";
 
 		if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
@@ -820,11 +825,22 @@ class EditorPlayState extends MusicBeatState
 			daRating = 'good';
 			//score = 200;
 		}
+		else if (noteDiff > Conductor.safeZoneOffset * 0.10)
+			{
+				daRating = 'sick';
+				//score = 350;
+			}
 
 		if(daRating == 'sick' && !note.noteSplashDisabled)
 		{
 			spawnNoteSplashOnNote(note);
 		}
+
+		if(daRating == 'perfect' && !note.noteSplashDisabled)
+			{
+				spawnNoteSplashOnNote(note);
+			}
+		
 		//songScore += score;
 
 		/* if (combo > 60)

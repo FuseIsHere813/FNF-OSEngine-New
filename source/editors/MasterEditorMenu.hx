@@ -11,7 +11,12 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel > "5.3.0")
+import flixel.sound.FlxSound;
+#end
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
@@ -26,8 +31,7 @@ class MasterEditorMenu extends MusicBeatState
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
 		'Character Editor',
-		'Chart Editor',
-		'Stage Editor (ALPHA)'
+		'Chart Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -54,10 +58,11 @@ class MasterEditorMenu extends MusicBeatState
 
 		for (i in 0...options.length)
 		{
-			var leText:Alphabet = new Alphabet(0, (70 * i) + 30, options[i], true, false);
+			var leText:Alphabet = new Alphabet(90, 320, options[i], true);
 			leText.isMenuItem = true;
 			leText.targetY = i;
 			grpTexts.add(leText);
+			leText.snapToPosition();
 		}
 		
 		#if MODS_ALLOWED
@@ -126,8 +131,6 @@ class MasterEditorMenu extends MusicBeatState
 					LoadingState.loadAndSwitchState(new DialogueEditorState(), false);
 				case 'Chart Editor'://felt it would be cool maybe
 					LoadingState.loadAndSwitchState(new ChartingState(), false);
-				case 'Stage Editor (ALPHA)': // i'll finish it somedays... maybe....
-					LoadingState.loadAndSwitchState(new StageEditorState(), false);
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL

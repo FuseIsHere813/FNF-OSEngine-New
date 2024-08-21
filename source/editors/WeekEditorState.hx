@@ -11,7 +11,12 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel > "5.3.0")
+import flixel.sound.FlxSound;
+#end
 import openfl.utils.Assets;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
@@ -606,10 +611,11 @@ class WeekEditorFreeplayState extends MusicBeatState
 
 		for (i in 0...weekFile.songs.length)
 		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, weekFile.songs[i][0], true, false);
+			var songText:Alphabet = new Alphabet(90, 320, weekFile.songs[i][0], true);
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
+			songText.snapToPosition();
 
 			var icon:HealthIcon = new HealthIcon(weekFile.songs[i][1]);
 			icon.sprTracker = songText;

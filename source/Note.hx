@@ -39,9 +39,6 @@ class Note extends FlxSprite
 	public var parent:Note;
 	public var blockHit:Bool = false; // only works for player
 
-	public var shouldbehidden:Bool = false;
-	public var charSkin:String = null;
-
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var noteType(default, set):String = null;
@@ -61,10 +58,9 @@ class Note extends FlxSprite
 	public var lowPriority:Bool = false;
 
 	public static var swagWidth:Float = 160 * 0.7;
-	public static var PURP_NOTE:Int = 0;
-	public static var GREEN_NOTE:Int = 2;
-	public static var BLUE_NOTE:Int = 1;
-	public static var RED_NOTE:Int = 3;
+	
+	private var colArray:Array<String> = ['purple', 'blue', 'green', 'red'];
+	private var pixelInt:Array<Int> = [0, 1, 2, 3];
 
 	// Lua shit
 	public var noteSplashDisabled:Bool = false;
@@ -165,31 +161,9 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?charSkin:String = null)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false)
 	{
 		super();
-
-		if (!inEditor && ClientPrefs.getGameplaySetting('randomcharts', false)) {
-			noteData = FlxG.random.int(0,3);
-			if (sustainNote && prevNote != null) {
-				noteData = prevNote.noteData;
-			}
-		}
-
-		if (!inEditor && ClientPrefs.getGameplaySetting('mirrorcharts', false)) {
-			noteData = Std.parseInt(Std.string(Math.abs(Std.parseFloat(Std.string(noteData-3)))));
-			/*
-			if (noteData == 0) {
-				noteData = 3;
-			} else if (noteData == 1) {
-				noteData = 2;
-			} else if (noteData == 2) {
-				noteData = 1;
-			} else if (noteData == 3) {
-				noteData = 0;
-			}
-			*/
-		}
 
 		if (prevNote == null)
 			prevNote = this;
@@ -197,7 +171,6 @@ class Note extends FlxSprite
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
 		this.inEditor = inEditor;
-		this.charSkin = charSkin;
 
 		x += (ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X) + 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
@@ -215,17 +188,7 @@ class Note extends FlxSprite
 			x += swagWidth * (noteData);
 			if(!isSustainNote && noteData > -1 && noteData < 4) { //Doing this 'if' check to fix the warnings on Senpai songs
 				var animToPlay:String = '';
-				switch (noteData % 4)
-				{
-					case 0:
-						animToPlay = 'purple';
-					case 1:
-						animToPlay = 'blue';
-					case 2:
-						animToPlay = 'green';
-					case 3:
-						animToPlay = 'red';
-				}
+				animToPlay = colArray[noteData % 4];
 				animation.play(animToPlay + 'Scroll');
 			}
 		}
@@ -245,17 +208,7 @@ class Note extends FlxSprite
 			offsetX += width / 2;
 			copyAngle = false;
 
-			switch (noteData % 4)
-			{
-				case 0:
-					animation.play('purpleholdend');
-				case 1:
-					animation.play('blueholdend');
-				case 2:
-					animation.play('greenholdend');
-				case 3:
-					animation.play('redholdend');
-			}
+			animation.play(colArray[noteData % 4] + 'holdend');
 
 			updateHitbox();
 
@@ -266,17 +219,7 @@ class Note extends FlxSprite
 
 			if (prevNote.isSustainNote)
 			{
-				switch (prevNote.noteData % 4)
-				{
-					case 0:
-						prevNote.animation.play('purplehold');
-					case 1:
-						prevNote.animation.play('bluehold');
-					case 2:
-						prevNote.animation.play('greenhold');
-					case 3:
-						prevNote.animation.play('redhold');
-				}
+				prevNote.animation.play(colArray[prevNote.noteData % 4] + 'hold');
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
 				if(PlayState.instance != null)
@@ -315,20 +258,7 @@ class Note extends FlxSprite
 			skin = PlayState.SONG.arrowSkin;
 			if(skin == null || skin.length < 1) {
 				skin = 'NOTE_assets';
-				if (prefix == '') {
-					if(ClientPrefs.noteSkinSettings == 'Clasic') {
-						skin = 'NOTE_assets';
-					} else if (ClientPrefs.noteSkinSettings == 'Circle') {
-						skin = 'NOTE_assets_circle';
-					} else {
-						skin = 'NOTE_assets';// for preventing crashes
-					}
-				}
 			}
-		}
-
-		if (charSkin != null && (prefix == '')) {
-			skin = charSkin;
 		}
 
 		var animName:String = null;
@@ -389,53 +319,26 @@ class Note extends FlxSprite
 		}
 	}
 
-	public function globalReloadNote(?prefix:String = '', ?texture:String = '', ?suffix:String = ''){
-		reloadNote(prefix, texture, suffix); // LOOOOOOOOOOOOOOL TOP 10 0 IQ MOVES
-	}
-
 	function loadNoteAnims() {
-		animation.addByPrefix('greenScroll', 'green0');
-		animation.addByPrefix('redScroll', 'red0');
-		animation.addByPrefix('blueScroll', 'blue0');
-		animation.addByPrefix('purpleScroll', 'purple0');
+		animation.addByPrefix(colArray[noteData] + 'Scroll', colArray[noteData] + '0');
 
 		if (isSustainNote)
 		{
-			animation.addByPrefix('purpleholdend', 'pruple end hold');
-			animation.addByPrefix('greenholdend', 'green hold end');
-			animation.addByPrefix('redholdend', 'red hold end');
-			animation.addByPrefix('blueholdend', 'blue hold end');
-
-			animation.addByPrefix('purplehold', 'purple hold piece');
-			animation.addByPrefix('greenhold', 'green hold piece');
-			animation.addByPrefix('redhold', 'red hold piece');
-			animation.addByPrefix('bluehold', 'blue hold piece');
+			animation.addByPrefix('purpleholdend', 'pruple end hold'); // ?????
+			animation.addByPrefix(colArray[noteData] + 'holdend', colArray[noteData] + ' hold end');
+			animation.addByPrefix(colArray[noteData] + 'hold', colArray[noteData] + ' hold piece');
 		}
 
 		setGraphicSize(Std.int(width * 0.7));
 		updateHitbox();
 	}
 
-	public function globalLoadNoteAnims(){
-		loadNoteAnims(); // LOOOOOOOOOOOOOOL TOP 10 0 IQ MOVES
-	}
-
 	function loadPixelNoteAnims() {
 		if(isSustainNote) {
-			animation.add('purpleholdend', [PURP_NOTE + 4]);
-			animation.add('greenholdend', [GREEN_NOTE + 4]);
-			animation.add('redholdend', [RED_NOTE + 4]);
-			animation.add('blueholdend', [BLUE_NOTE + 4]);
-
-			animation.add('purplehold', [PURP_NOTE]);
-			animation.add('greenhold', [GREEN_NOTE]);
-			animation.add('redhold', [RED_NOTE]);
-			animation.add('bluehold', [BLUE_NOTE]);
+			animation.add(colArray[noteData] + 'holdend', [pixelInt[noteData] + 4]);
+			animation.add(colArray[noteData] + 'hold', [pixelInt[noteData]]);
 		} else {
-			animation.add('greenScroll', [GREEN_NOTE + 4]);
-			animation.add('redScroll', [RED_NOTE + 4]);
-			animation.add('blueScroll', [BLUE_NOTE + 4]);
-			animation.add('purpleScroll', [PURP_NOTE + 4]);
+			animation.add(colArray[noteData] + 'Scroll', [pixelInt[noteData] + 4]);
 		}
 	}
 

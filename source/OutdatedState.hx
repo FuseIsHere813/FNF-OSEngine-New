@@ -1,5 +1,3 @@
-/*
-
 package;
 
 import flixel.FlxG;
@@ -62,4 +60,3 @@ class OutdatedState extends MusicBeatState
 		super.update(elapsed);
 	}
 }
-*/

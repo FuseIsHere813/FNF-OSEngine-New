@@ -29,7 +29,7 @@ using StringTools;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay', 'Chart Editor'];
+	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
@@ -48,8 +48,6 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
-			case 'Chart Editor':
-				openSubState(new options.ChartEditorSettingsSubState());
 		}
 	}
 
@@ -74,15 +72,15 @@ class OptionsState extends MusicBeatState
 
 		for (i in 0...options.length)
 		{
-			var optionText:Alphabet = new Alphabet(0, 0, options[i], true, false);
+			var optionText:Alphabet = new Alphabet(0, 0, options[i], true);
 			optionText.screenCenter();
 			optionText.y += (100 * (i - (options.length / 2))) + 50;
 			grpOptions.add(optionText);
 		}
 
-		selectorLeft = new Alphabet(0, 0, '>', true, false);
+		selectorLeft = new Alphabet(0, 0, '>', true);
 		add(selectorLeft);
-		selectorRight = new Alphabet(0, 0, '<', true, false);
+		selectorRight = new Alphabet(0, 0, '<', true);
 		add(selectorRight);
 
 		changeSelection();
@@ -113,9 +111,9 @@ class OptionsState extends MusicBeatState
 				PauseSubState.wasinsongbeforethenwenttooptions = false;
 			} else {
 				MusicBeatState.switchState(new MainMenuState());
+				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			}
 		}
-
 
 		if (controls.ACCEPT) {
 			openSelectedSubstate(options[curSelected]);

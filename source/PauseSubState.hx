@@ -7,7 +7,12 @@ import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel > "5.3.0")
+import flixel.sound.FlxSound;
+#end
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -17,16 +22,16 @@ import flixel.util.FlxStringUtil;
 
 class PauseSubState extends MusicBeatSubstate
 {
+	public static var wasinsongbeforethenwenttooptions:Bool;
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Gameplay Changers', 'Options', 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Options', 'Exit to menu'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
 	var practiceText:FlxText;
-	public static var wasinsongbeforethenwenttooptions:Bool;
 	var skipTimeText:FlxText;
 	var skipTimeTracker:Alphabet;
 	var curTime:Float = Math.max(0, Conductor.songPosition);
@@ -257,10 +262,6 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
 					MusicBeatState.switchState(new options.OptionsState());
-					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				case 'Gameplay Changers':
-					close();
-					PlayState.instance.openChangersMenu();
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
@@ -359,7 +360,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 
 		for (i in 0...menuItems.length) {
-			var item = new Alphabet(0, 70 * i + 30, menuItems[i], true, false);
+			var item = new Alphabet(90, 320, menuItems[i], true);
 			item.isMenuItem = true;
 			item.targetY = i;
 			grpMenuShit.add(item);

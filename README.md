@@ -1,6 +1,5 @@
-![](https://media.discordapp.net/attachments/969211146412363828/980124443164672000/23336ff517a80f27.png?width=1101&height=701)
-# Friday Night Funkin' - OS Engine - Modded Psych Engine 
-![](https://img.shields.io/github/issues/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/forks/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/stars/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/license/notweuz/FNF-OSEngine) ![GitHub all releases](https://img.shields.io/github/downloads/notweuz/FNF-OSEngine/total) ![GitHub repo size](https://img.shields.io/github/repo-size/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/contributors/notweuz/FNF-OSEngine) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/notweuz/FNF-OSEngine/latest/total)
+# Friday Night Funkin' - Psych Engine
+Engine originally used on [Mind Games Mod](https://gamebanana.com/mods/301107), intended to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to be an easier alternative to newbie coders.
 
 ## Installation:
 You must have [the most up-to-date version of Haxe](https://haxe.org/download/), seriously, stop using 4.1.5, it misses some stuff.
@@ -11,25 +10,19 @@ To install LuaJIT do this: `haxelib git linc_luajit https://github.com/nebulazor
 
 ...Or if you don't want your mod to be able to run .lua scripts, delete the "LUA_ALLOWED" line on Project.xml
 
+
 If you get an error about StatePointer when using Lua, run `haxelib remove linc_luajit` into Command Prompt/PowerShell, then re-install linc_luajit.
 
 If you want video support on your mod, simply do `haxelib install hxCodec` on a Command prompt/PowerShell
 
-## OS Engine Credits:
-* [weuz_](https://github.com/notweuz) - Coding
-* [nelifs](https://github.com/nelifs) - Coding and Design
-* [Cooljer](https://github.com/cooljer) - Arts
+otherwise, you can delete the "VIDEOS_ALLOWED" Line on Project.xml
 
-### OS Engine Special Thanks
-* [jonnycat](https://github.com/McJonnycat) - Fixing bugs in Engine <3.
-* [Kade Engine](https://gamebanana.com/mods/44291) - Circle Note Skin
-
-## Psych Engine Credits:
+## Credits:
 * Shadow Mario - Programmer
 * RiverOaken - Artist
 * Yoshubs - Assistant Programmer
 
-### Psych Engine Special Thanks
+### Special Thanks
 * bbpanzu - Ex-Programmer
 * shubs - New Input System
 * SqirraRNG - Crash Handler and Base code for Chart Editor's Waveform
@@ -38,77 +31,74 @@ If you want video support on your mod, simply do `haxelib install hxCodec` on a 
 * PolybiusProxy - .MP4 Video Loader Library (hxCodec)
 * Keoiki - Note Splash Animations
 * Smokey - Sprite Atlas Support
-* Nebula the Zorua - LUA JIT Fork and some Lua reworks & VCR Shader code
+* Nebula the Zorua - LUA JIT Fork and some Lua reworks
 _____________________________________
 
 # Features
 
-## Psych Engine Features
+## Attractive animated dialogue boxes:
 
-OS Engine is a fork of Psych Engine, so you can use almost every feature from Psych Engine in OS Engine!
+![](https://user-images.githubusercontent.com/44785097/127706669-71cd5cdb-5c2a-4ecc-871b-98a276ae8070.gif)
 
-## OS Engine Features
 
-### Psych Engine mods compability
-Yes, almost every mod for Psych Engine runs on OS Engine.
+## Mod Support
+* Probably one of the main points of this engine, you can code in .lua files outside of the source code, making your own weeks without even messing with the source!
+* Comes with a Mod Organizing/Disabling Menu.
 
-### Note Skins
-OS Engine adds a note skins system! There's only Default and Circle skins by default.
 
-![](https://media.discordapp.net/attachments/969211146412363828/969211181728399420/unknown.png)
+## Atleast one change to every week:
+### Week 1:
+  * New Dad Left sing sprite
+  * Unused stage lights are now used
+### Week 2:
+  * Both BF and Skid & Pump does "Hey!" animations
+  * Thunders does a quick light flash and zooms the camera in slightly
+  * Added a quick transition/cutscene to Monster
+### Week 3:
+  * BF does "Hey!" during Philly Nice
+  * Blammed has a cool new colors flash during that sick part of the song
+### Week 4:
+  * Better hair physics for Mom/Boyfriend (Maybe even slightly better than Week 7's :eyes:)
+  * Henchmen die during all songs. Yeah :(
+### Week 5:
+  * Bottom Boppers and GF does "Hey!" animations during Cocoa and Eggnog
+  * On Winter Horrorland, GF bops her head slower in some parts of the song.
+### Week 6:
+  * On Thorns, the HUD is hidden during the cutscene
+  * Also there's the Background girls being spooky during the "Hey!" parts of the Instrumental
 
-### Showcase Mode
-This feature hides HUD and enables botplay. So you can showcase any mod without any problems.
+## Cool new Chart Editor changes and countless bug fixes
+![](https://github.com/ShadowMario/FNF-PsychEngine/blob/main/docs/img/chart.png?raw=true)
+* You can now chart "Event" notes, which are bookmarks that trigger specific actions that usually were hardcoded on the vanilla version of the game.
+* Your song's BPM can now have decimal values
+* You can manually adjust a Note's strum time if you're really going for milisecond precision
+* You can change a note's type on the Editor, it comes with two example types:
+  * Alt Animation: Forces an alt animation to play, useful for songs like Ugh/Stress
+  * Hey: Forces a "Hey" animation instead of the base Sing animation, if Boyfriend hits this note, Girlfriend will do a "Hey!" too.
 
-![](https://media.discordapp.net/attachments/969211146412363828/969211657307951104/unknown.png)
+## Multiple editors to assist you in making your own Mod
+![Screenshot_3](https://user-images.githubusercontent.com/44785097/144629914-1fe55999-2f18-4cc1-bc70-afe616d74ae5.png)
+* Working both for Source code modding and Downloaded builds!
 
-### Hide Score Text
-This feature hides score text under health bar. Idk why you need to use it.
+## Story mode menu rework:
+![](https://i.imgur.com/UB2EKpV.png)
+* Added a different BG to every song (less Tutorial)
+* All menu characters are now in individual spritesheets, makes modding it easier.
 
-![](https://media.discordapp.net/attachments/969211146412363828/969211797993299979/unknown.png)
+## Credits menu
+![Screenshot_1](https://user-images.githubusercontent.com/44785097/144632635-f263fb22-b879-4d6b-96d6-865e9562b907.png)
+* You can add a head icon, name, description and a Redirect link for when the player presses Enter while the item is currently selected.
 
-### Perfect!! Judgement
-Adds Perfect!! Judgement. It's better than sick. Btw you can disable it in settings if you want.
+## Awards/Achievements
+* The engine comes with 16 example achievements that you can mess with and learn how it works (Check Achievements.hx and search for "checkForAchievement" on PlayState.hx)
 
-![](https://media.discordapp.net/attachments/969211146412363828/969213039230455838/unknown.png)
-![](https://media.discordapp.net/attachments/969211146412363828/969212313410351134/unknown.png?width=1440&height=190)
+## Options menu:
+* You can change Note colors, Delay and Combo Offset, Controls and Preferences there.
+ * On Preferences you can toggle Downscroll, Middlescroll, Anti-Aliasing, Framerate, Low Quality, Note Splashes, Flashing Lights, etc.
 
-### Lane Underlay
-You can set lane underlay transparency under arrows by using that functions.
-
-![](https://media.discordapp.net/attachments/969211146412363828/969212761605296198/unknown.png?width=465&height=676)
-![](https://media.discordapp.net/attachments/969211146412363828/969212421887635546/unknown.png?width=1440&height=326)
-
-### Custom Settings in Chart Editor.
-There's multiple new functions in chart editor. Like player/opponent trail, camera move and etc.
-
-![](https://media.discordapp.net/attachments/969211146412363828/969213936924774430/unknown.png)
-
-### Literally Useless Exit Game State
-Now you can press ESC at title state. And game will ask you do you want to close game or no
-
-![](https://media.discordapp.net/attachments/969211146412363828/969214715702177812/unknown.png?width=1202&height=676)
-
-### Bit Changed Main Menu State
-
-![](https://media.discordapp.net/attachments/969211146412363828/969214974369099807/unknown.png)
-
-### Winning icons 
-Instead of 2 icons, there'll be three icons (losing, normal, winning). And yes, you can use double icons (without winning).
-
-![](https://github.com/weuz-github/FNF-OSEngine/blob/main/assets/preload/images/icons/icon-bf.png?raw=true)
-
-*thanks Cooljer for remaking original fnf icons*
-
-### Shaders
-Returned shaders from old psych engine versions. Now you can make your bambi mods.
-
-### Custom Title State
-Bit changed Title State. Now it looks way more better.
-
-![](https://media.discordapp.net/attachments/969211146412363828/969215626126196797/unknown.png?width=1202&height=676)
-
-### Striped Health Bar
-Cassette Girl vibes?
-
-![](https://media.discordapp.net/attachments/969211146412363828/969218236950397038/unknown.png)
+## Other gameplay features:
+* When the enemy hits a note, their strum note also glows.
+* Lag doesn't impact the camera movement and player icon scaling anymore.
+* Some stuff based on Week 7's changes has been put in (Background colors on Freeplay, Note splashes)
+* You can reset your Score on Freeplay/Story Mode by pressing Reset button.
+* You can listen to a song or adjust Scroll Speed/Damage taken/etc. on Freeplay by pressing Space.
