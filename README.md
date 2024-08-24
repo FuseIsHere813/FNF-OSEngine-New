@@ -1,6 +1,14 @@
+<<<<<<< Updated upstream
 ![](https://media.discordapp.net/attachments/969211146412363828/980124443164672000/23336ff517a80f27.png?width=1101&height=701)
 # Friday Night Funkin' - OS Engine - Modded Psych Engine 
 ![](https://img.shields.io/github/issues/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/forks/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/stars/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/license/notweuz/FNF-OSEngine) ![GitHub all releases](https://img.shields.io/github/downloads/notweuz/FNF-OSEngine/total) ![GitHub repo size](https://img.shields.io/github/repo-size/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/contributors/notweuz/FNF-OSEngine) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/notweuz/FNF-OSEngine/latest/total)
+=======
+![](https://pbs.twimg.com/media/GUgvjl2XoAA7nyC?format=jpg&name=small)
+### *Guess how many OS Engine forks I saw Marge? 160!* - Homer J. Simpson
+
+# Friday Night Funkin' OS Engine - NEW 0.6.3 UPDATE!
+![](https://img.shields.io/github/issues/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/forks/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/stars/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/license/FuseIsHere813/FNF-OSEngine-New) ![GitHub all releases](https://img.shields.io/github/downloads/FuseIsHere813/FNF-OSEngine-New/total) ![GitHub repo size](https://img.shields.io/github/repo-size/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/contributors/FuseIsHere813/FNF-OSEngine-New) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/FuseIsHere813/FNF-OSEngine-New/latest/total)
+>>>>>>> Stashed changes
 
 ## Installation:
 You must have [the most up-to-date version of Haxe](https://haxe.org/download/), seriously, stop using 4.1.5, it misses some stuff.
@@ -108,7 +116,13 @@ Bit changed Title State. Now it looks way more better.
 
 ![](https://media.discordapp.net/attachments/969211146412363828/969215626126196797/unknown.png?width=1202&height=676)
 
+![](./docs/img/osEngine/title.png)
+
 ### Striped Health Bar
 Cassette Girl vibes?
 
+<<<<<<< Updated upstream
 ![](https://media.discordapp.net/attachments/969211146412363828/969218236950397038/unknown.png)
+=======
+![](./docs/img/osEngine/strippedBar.png)
+>>>>>>> Stashed changes
