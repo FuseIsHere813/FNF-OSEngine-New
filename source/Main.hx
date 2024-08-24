@@ -143,7 +143,7 @@ class Main extends Sprite
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		Application.current.window.alert(errMsg, "Error!" + " OS Engine v" + MainMenuState.osEngineVersion);
+		Application.current.window.alert(errMsg, "Error!" + " Psych Engine v" + MainMenuState.psychEngineVersion);
 		DiscordClient.shutdown();
 		Sys.exit(1);
 	}
