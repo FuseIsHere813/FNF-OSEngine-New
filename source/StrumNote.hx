@@ -3,7 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
-import PlayState;
 #if sys
 import sys.FileSystem;
 #end
@@ -34,7 +33,7 @@ class StrumNote extends FlxSprite
 		colorSwap = new ColorSwap();
 		shader = colorSwap.shader;
 		noteData = leData;
-
+		
 		if (PlayState.SONG.swapStrumLines == true) {
 			if (player == 1) {
 				player = 0;
@@ -49,7 +48,7 @@ class StrumNote extends FlxSprite
 
 		var skin:String = 'NOTE_assets';
 		if (PlayState.SONG.arrowSkin == null || PlayState.SONG.arrowSkin.length <= 1) {
-			if(ClientPrefs.noteSkinSettings == 'Clasic') {
+			if(ClientPrefs.noteSkinSettings == 'Classic') {
 				skin = 'NOTE_assets';
 			} else if (ClientPrefs.noteSkinSettings == 'Circle') {
 				skin = 'NOTE_assets_circle';
@@ -57,7 +56,8 @@ class StrumNote extends FlxSprite
 				skin = 'NOTE_assets';// for preventing crashes
 			}
 		}
-		if (PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
+
+		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
 
 		#if sys
 		if (this.player == 1) {
@@ -71,6 +71,7 @@ class StrumNote extends FlxSprite
 		}
 		#end
 		//trace(PlayState.SONG.arrowSkin); мама я в ютубе
+
 		texture = skin; //Load texture and anims
 
 		scrollFactor.set();

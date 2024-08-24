@@ -1,37 +1,36 @@
-![](https://media.discordapp.net/attachments/969211146412363828/980124443164672000/23336ff517a80f27.png?width=1101&height=701)
-# Friday Night Funkin' - OS Engine - Modded Psych Engine 
-![](https://img.shields.io/github/issues/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/forks/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/stars/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/license/notweuz/FNF-OSEngine) ![GitHub all releases](https://img.shields.io/github/downloads/notweuz/FNF-OSEngine/total) ![GitHub repo size](https://img.shields.io/github/repo-size/notweuz/FNF-OSEngine) ![](https://img.shields.io/github/contributors/notweuz/FNF-OSEngine) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/notweuz/FNF-OSEngine/latest/total)
+![](https://pbs.twimg.com/media/GUgvjl2XoAA7nyC?format=jpg&name=small)
+### *Guess how many OS Engine forks I saw Marge? 160!* - Homer J. Simpson
+
+# Friday Night Funkin' OS Engine - NEW 0.6.3 UPDATE!
+![](https://img.shields.io/github/issues/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/forks/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/stars/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/license/FuseIsHere813/FNF-OSEngine-New) ![GitHub all releases](https://img.shields.io/github/downloads/FuseIsHere813/FNF-OSEngine-New/total) ![GitHub repo size](https://img.shields.io/github/repo-size/FuseIsHere813/FNF-OSEngine-New) ![](https://img.shields.io/github/contributors/FuseIsHere813/FNF-OSEngine-New) ![GitHub release (latest by date)](https://img.shields.io/github/downloads/FuseIsHere813/FNF-OSEngine-New/latest/total)
 
 ## Installation:
-You must have [the most up-to-date version of Haxe](https://haxe.org/download/), seriously, stop using 4.1.5, it misses some stuff.
 
-Follow a Friday Night Funkin' source code compilation tutorial, after this you will need to install LuaJIT.
+Refer to the [Building Instructions.](https://github.com/FuseIsHere813/FNF-OSEngine-New/wiki/Library-Versions)
 
-To install LuaJIT do this: `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit` on a Command prompt/PowerShell
-
-...Or if you don't want your mod to be able to run .lua scripts, delete the "LUA_ALLOWED" line on Project.xml
+If you don't want your mod to be able to run .lua scripts, delete the "LUA_ALLOWED" line on Project.xml
 
 If you get an error about StatePointer when using Lua, run `haxelib remove linc_luajit` into Command Prompt/PowerShell, then re-install linc_luajit.
 
-If you want video support on your mod, simply do `haxelib install hxCodec` on a Command prompt/PowerShell
-
 ## OS Engine Credits:
-* [weuz_](https://github.com/notweuz) - Coding
-* [nelifs](https://github.com/nelifs) - Coding and Design
-* [Cooljer](https://github.com/cooljer) - Arts
+* [weuz_](https://github.com/notweuz) - Original Owner / Lead Programmer
+* [nelifs](https://github.com/nelifs) - Main Designer / Programmer
+* [Cooljer](https://github.com/cooljer) - Main Artist / Winning Icons
 
 ### OS Engine Special Thanks
+* [Fuse](https://github.com/FuseIsHere813) - 0.6.3 PORT HEH-, and his smart brain for more customizable options.
+* [JSE Team (Jordan Santiago/Moxie)](https://github.com/JordanSantiagoYT/FNF-JS-Engine) - For the Note Spam System in JS Engine
+* [Vs. Dave And Bambi)](https://twitter.com/vsdaveandbambi) - Rainbow Eyesores/Wavy Background Code
+* [ExpungedGaming6969](youtube.com/@ExpungedGaming6969) - New Ideas for Engine / Goat.
 * [jonnycat](https://github.com/McJonnycat) - Fixing bugs in Engine <3.
-* [Kade Engine](https://gamebanana.com/mods/44291) - Circle Note Skin
+* [Kade Engine](https://gamebanana.com/mods/44291) - Circle Note Skin.
 
 ## Psych Engine Credits:
 * Shadow Mario - Programmer
-* RiverOaken - Artist
-* Yoshubs - Assistant Programmer
+* Riveren - Artist
 
 ### Psych Engine Special Thanks
 * bbpanzu - Ex-Programmer
-* shubs - New Input System
 * SqirraRNG - Crash Handler and Base code for Chart Editor's Waveform
 * KadeDev - Fixed some cool stuff on Chart Editor and other PRs
 * iFlicky - Composer of Psync and Tea Time, also made the Dialogue Sounds
@@ -41,74 +40,85 @@ If you want video support on your mod, simply do `haxelib install hxCodec` on a 
 * Nebula the Zorua - LUA JIT Fork and some Lua reworks & VCR Shader code
 _____________________________________
 
-# Features
-
-## Psych Engine Features
-
-OS Engine is a fork of Psych Engine, so you can use almost every feature from Psych Engine in OS Engine!
-
 ## OS Engine Features
 
-### Psych Engine mods compability
-Yes, almost every mod for Psych Engine runs on OS Engine.
+OS Engine is a fork of [Psych Engine](https://github.com/shadowmario/psychengine/tag/0.6.2), so it does support mods, like the original.
+
+Not only that, it brings new features for this modfication, making mods more user-friendly, and of course, more VDAB friendly too.
+
+More features will be added later (For contribution, please make a pull request with your desired change. It will be reviewed).
 
 ### Note Skins
-OS Engine adds a note skins system! There's only Default and Circle skins by default.
+OS Engine adds the circle noteskin only for right, soon we will add another skin in reference to osu!mania.
+Select your desired in the Options Menu.
 
-![](https://media.discordapp.net/attachments/969211146412363828/969211181728399420/unknown.png)
+![](./docs/img/osEngine/circle.png)
 
 ### Showcase Mode
 This feature hides HUD and enables botplay. So you can showcase any mod without any problems.
 
-![](https://media.discordapp.net/attachments/969211146412363828/969211657307951104/unknown.png)
+![](./docs/img/osEngine/showcase.png)
 
-### Hide Score Text
-This feature hides score text under health bar. Idk why you need to use it.
+### Score HUD Style
+Brought back the Psych Engine look, and added the original look used from OS Engine itself.
+(cry about it weuz /j)
 
-![](https://media.discordapp.net/attachments/969211146412363828/969211797993299979/unknown.png)
+You can select either the "Simple" or "Normal" option in the Visuals & UI section in the options menu.
 
-### Perfect!! Judgement
-Adds Perfect!! Judgement. It's better than sick. Btw you can disable it in settings if you want.
+![](./docs/img/osEngine/scoreHUD2.png)
+![](./docs/img/osEngine/scoreHUD1.png)
 
-![](https://media.discordapp.net/attachments/969211146412363828/969213039230455838/unknown.png)
-![](https://media.discordapp.net/attachments/969211146412363828/969212313410351134/unknown.png?width=1440&height=190)
+### Perfect! Judgement
+Adds the "Perfect!" Judgement, to get this rating, you must hit a note better than "Sick!".
+Can be left/removed under the "Gameplay" section in the Options menu.
+
+![](./docs/img/osEngine/perfect.png)
 
 ### Lane Underlay
-You can set lane underlay transparency under arrows by using that functions.
+You can set lane underlay transparency under the player's notes, transparency settings can be modified in value.
+Also works with the opponent notes too somehow lo-
 
-![](https://media.discordapp.net/attachments/969211146412363828/969212761605296198/unknown.png?width=465&height=676)
-![](https://media.discordapp.net/attachments/969211146412363828/969212421887635546/unknown.png?width=1440&height=326)
+![](./docs/img/osEngine/underlayUGH.png)
 
 ### Custom Settings in Chart Editor.
 There's multiple new functions in chart editor. Like player/opponent trail, camera move and etc.
 
-![](https://media.discordapp.net/attachments/969211146412363828/969213936924774430/unknown.png)
+![](./docs/img/osEngine/chartOptions.png)
 
 ### Literally Useless Exit Game State
-Now you can press ESC at title state. And game will ask you do you want to close game or no
+Now you can press ESC at the title screen, and it will ask you if you wanna quit or not.
 
-![](https://media.discordapp.net/attachments/969211146412363828/969214715702177812/unknown.png?width=1202&height=676)
+![](./docs/img/osEngine/gameExit.png)
 
-### Bit Changed Main Menu State
+### Improved Main Menu State
 
-![](https://media.discordapp.net/attachments/969211146412363828/969214974369099807/unknown.png)
+Nothing much, but kept from the latest official version. (1.5.1)
+
+![](./docs/img/osEngine/mainMenu.png)
 
 ### Winning icons 
 Instead of 2 icons, there'll be three icons (losing, normal, winning). And yes, you can use double icons (without winning).
 
-![](https://github.com/weuz-github/FNF-OSEngine/blob/main/assets/preload/images/icons/icon-bf.png?raw=true)
+![](./docs/img/osEngine/winIcon1.png)
+![](./docs/img/osEngine/winIcon2.png)
 
-*thanks Cooljer for remaking original fnf icons*
+*thanks Cooljer for remaking original fnf icons lol*
 
 ### Shaders
-Returned shaders from old psych engine versions. Now you can make your bambi mods.
+Shaders were re-added from VDAB, and of course, with runtime support too. Now you can all enjoy making those funni spamtrack mods lo- /j
 
-### Custom Title State
-Bit changed Title State. Now it looks way more better.
+![](./docs/img/osEngine/inGameExample.png)
 
-![](https://media.discordapp.net/attachments/969211146412363828/969215626126196797/unknown.png?width=1202&height=676)
+### Improved Title State
+Added a background to the Title State. 
+
+"Now it looks way more better". - notweuz_ 2022
+
+The background will be JSON editable soon, for now it can be safe to be left/removed using source code.
+
+![](./docs/img/osEngine/title.png)
 
 ### Striped Health Bar
 Cassette Girl vibes?
 
-![](https://media.discordapp.net/attachments/969211146412363828/969218236950397038/unknown.png)
+![](./docs/img/osEngine/strippedBar.png)

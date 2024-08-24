@@ -5,7 +5,13 @@ import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel >= "5.3.0")
+import flixel.sound.FlxSound;
+#end
+import Song.SwagSong;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
@@ -25,6 +31,8 @@ class CoolUtil
 	public static var defaultDifficulty:String = 'Normal'; //The chart that has no suffix and starting difficulty on Freeplay/Story Mode
 
 	public static var difficulties:Array<String> = [];
+
+	public static var currentDifficulty:String = 'Normal';
 
 	inline public static function quantize(f:Float, snap:Float){
 		// changed so this actually works lol
@@ -137,5 +145,21 @@ class CoolUtil
 		#else
 		FlxG.openURL(site);
 		#end
+	}
+
+	public static function getNoteAmount(song:SwagSong, ?bothSides:Bool = true, ?oppNotes:Bool = false):Int {
+		var total:Int = 0;
+		for (section in song.notes) {
+			if (bothSides) total += section.sectionNotes.length;
+			else
+			{
+				for (songNotes in section.sectionNotes)
+				{
+					if (!oppNotes && (songNotes[1] < 4 ? section.mustHitSection : !section.mustHitSection)) total += 1;
+					if (oppNotes && (songNotes[1] < 4 ? !section.mustHitSection : section.mustHitSection)) total += 1;
+				}
+			}
+		}
+		return total;
 	}
 }

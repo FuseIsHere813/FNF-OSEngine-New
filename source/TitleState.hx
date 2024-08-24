@@ -28,16 +28,22 @@ import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+#if (flixel < "5.3.0")
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
+#end
+#if (flixel >= "5.3.0")
+import flixel.sound.FlxSound;
+#end
 import flixel.system.ui.FlxSoundTray;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.addons.display.FlxBackdrop;
 import lime.app.Application;
 import openfl.Assets;
-import flixel.addons.display.FlxBackdrop;
+
 
 using StringTools;
 typedef TitleData =
@@ -204,24 +210,30 @@ class TitleState extends MusicBeatState
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		#if desktop
-		if (!DiscordClient.isInitialized)
-		{
-			DiscordClient.initialize();
-			Application.current.onExit.add (function (exitCode) {
-				DiscordClient.shutdown();
-			});
-		}
-		#end
-
-		if (initialized)
-			startIntro();
-		else
-		{
-			new FlxTimer().start(1, function(tmr:FlxTimer)
+		if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
+			FlxTransitionableState.skipNextTransIn = true;
+			FlxTransitionableState.skipNextTransOut = true;
+			MusicBeatState.switchState(new FlashingState());
+		} else {
+			#if desktop
+			if (!DiscordClient.isInitialized)
 			{
+				DiscordClient.initialize();
+				Application.current.onExit.add (function (exitCode) {
+					DiscordClient.shutdown();
+				});
+			}
+			#end
+
+			if (initialized)
 				startIntro();
-			});
+			else
+			{
+				new FlxTimer().start(1, function(tmr:FlxTimer)
+				{
+					startIntro();
+				});
+			}
 		}
 		#end
 	}
@@ -325,7 +337,7 @@ class TitleState extends MusicBeatState
 				gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		}
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
-
+		
 		titlestatebg = new FlxBackdrop(Paths.image('loading'), 0.2, 0, true, true);
 		titlestatebg.velocity.set(200, 110);
 		titlestatebg.updateHitbox();
@@ -333,7 +345,6 @@ class TitleState extends MusicBeatState
 		titlestatebg.screenCenter(X);
 		add(titlestatebg);
 		titlestatebg.shader = swagShader.shader;
-
 
 		add(gfDance);
 		gfDance.shader = swagShader.shader;
@@ -451,6 +462,12 @@ class TitleState extends MusicBeatState
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
+		var pressedEscape:Bool = FlxG.keys.justPressed.ESCAPE || controls.BACK;
+
+		if (pressedEscape) {
+			LoadingState.loadAndSwitchState(new GameExitState(), false);
+		}
+
 		#if mobile
 		for (touch in FlxG.touches.list)
 		{
@@ -510,7 +527,11 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					MusicBeatState.switchState(new MainMenuState());
+					if (mustUpdate) {
+						MusicBeatState.switchState(new OutdatedState());
+					} else {
+						MusicBeatState.switchState(new MainMenuState());
+					}
 					closedState = true;
 				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
@@ -585,7 +606,7 @@ class TitleState extends MusicBeatState
 	{
 		for (i in 0...textArray.length)
 		{
-			var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
+			var money:Alphabet = new Alphabet(0, 0, textArray[i], true);
 			money.screenCenter(X);
 			money.y += (i * 60) + 200 + offset;
 			if(credGroup != null && textGroup != null) {
@@ -598,7 +619,7 @@ class TitleState extends MusicBeatState
 	function addMoreText(text:String, ?offset:Float = 0)
 	{
 		if(textGroup != null && credGroup != null) {
-			var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
+			var coolText:Alphabet = new Alphabet(0, 0, text, true);
 			coolText.screenCenter(X);
 			coolText.y += (textGroup.length * 60) + 200 + offset;
 			credGroup.add(coolText);
@@ -640,39 +661,65 @@ class TitleState extends MusicBeatState
 					//FlxG.sound.music.stop();
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
-					createCoolText(['OS Engine by'], 45);
 				case 2:
-					addMoreText('weuz_', 45);
-					addMoreText('nelifs', 45);
-					addMoreText('Cooljer', 45);
-				case 3:
-					deleteCoolText();
-					createCoolText(['Forked', 'from'], 15);
+					#if PSYCH_WATERMARKS
+					createCoolText(['OS Engine by'], 15);
+					#else
+					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
+					#end
+				// credTextShit.visible = true;
 				case 4:
-					addMoreText('Psych Engine', 45);
+					#if PSYCH_WATERMARKS
+					addMoreText('Weuz', 15);
+					addMoreText('Nelifs', 15);
+					addMoreText('Cooljer', 15);
+					#else
+					addMoreText('present');
+					#end
+				// credTextShit.text += '\npresent...';
+				// credTextShit.addText();
+				case 5:
+					deleteCoolText();
+				// credTextShit.visible = false;
+				// credTextShit.text = 'In association \nwith';
+				// credTextShit.screenCenter();
 				case 6:
-					deleteCoolText();
-					createCoolText(['Psych Engine by'], 45);
-					addMoreText('Shadow Mario',45);
-					addMoreText('RiverOaken',45);
-					addMoreText('bbpanzu',45);
+					#if PSYCH_WATERMARKS
+					createCoolText(['Psych Engine by'], 15);
+					#end
 				case 8:
+					addMoreText('Shadow Mario', 15);
+					addMoreText('Riveren', 15);
+					//ngSpr.visible = true;
+				// credTextShit.text += '\nNewgrounds';
+				case 9:
 					deleteCoolText();
-					createCoolText([curWacky[0]]);
+					//ngSpr.visible = false;
+				// credTextShit.visible = false;
+
+				// credTextShit.text = 'Shoutouts Tom Fulp';
+				// credTextShit.screenCenter();
 				case 10:
-					addMoreText(curWacky[1]);
+					createCoolText([curWacky[0]]);
+				// credTextShit.visible = true;
 				case 12:
-					deleteCoolText();
+					addMoreText(curWacky[1]);
+				// credTextShit.text += '\nlmao';
 				case 13:
+					deleteCoolText();
+				// credTextShit.visible = false;
+				// credTextShit.text = "Friday";
+				// credTextShit.screenCenter();
+				case 14:
 					addMoreText('Friday');
 				// credTextShit.visible = true;
-				case 14:
+				case 15:
 					addMoreText('Night');
 				// credTextShit.text += '\nNight';
-				case 15:
+				case 16:
 					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
 
-				case 16:
+				case 17:
 					skipIntro();
 			}
 		}

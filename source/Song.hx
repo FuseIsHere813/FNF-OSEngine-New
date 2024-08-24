@@ -25,19 +25,20 @@ typedef SwagSong =
 	var player2:String;
 	var gfVersion:String;
 	var stage:String;
-	var healthdrainKill:Bool;
 
 	var arrowSkin:String;
 	var splashSkin:String;
 	var validScore:Bool;
+
+	var healthdrainKill:Bool;
 	var characterTrails:Bool;
 	var bfTrails:Bool;
+	var disableAntiMash:Bool;
+	var swapStrumLines:Bool;
+	var disableDebugButtons:Bool;
 	var cameraMoveOnNotes:Bool;
 	var healthdrain:Float;
-	var songInstVolume:Float;
-	var disableAntiMash:Bool;
-	var disableDebugButtons:Bool;
-	var swapStrumLines:Bool;
+	var instInGameVolume:Float;
 }
 
 class Song
@@ -47,23 +48,22 @@ class Song
 	public var events:Array<Dynamic>;
 	public var bpm:Float;
 	public var needsVoices:Bool = true;
-	public var cameraMoveOnNotes:Bool = false;
-	public var arrowSkin:String;
-	public var splashSkin:String;
-	public var speed:Float = 1;
-	public var healthdrain:Float = 0;
-	public var stage:String;
-	public var healthdrainKill:Bool = false;
-	public var characterTrails:Bool = false;
+	public var characterTrails:Bool = false; // os stuff here
 	public var bfTrails:Bool = false;
+	public var healthdrain:Float = 0;
+	public var instInGameVolume:Float = 1.0;
+	public var healthdrainKill:Bool = false;
 	public var disableAntiMash:Bool = false;
 	public var disableDebugButtons:Bool = false;
 	public var swapStrumLines:Bool = false;
-
+	public var cameraMoveOnNotes:Bool = false; // end of here
+	public var arrowSkin:String;
+	public var splashSkin:String;
+	public var speed:Float = 1;
+	public var stage:String;
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
 	public var gfVersion:String = 'gf';
-	public var songInstVolume:Float = 1;
 
 	private static function onLoadJson(songJson:Dynamic) // Convert old charts to newest format
 	{

@@ -49,13 +49,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			false); //Default value
 		addOption(option);
 
-		var option:Option = new Option('Display MS Offset On Note Hits',
-			'If checked, a offset (in ms) will appear near notes',
-			'showMsText',
-			'bool',
-			false);
-		addOption(option);
-
 		var option:Option = new Option('Middlescroll',
 			'If checked, your notes get centered.',
 			'middleScroll',
@@ -63,11 +56,11 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			false);
 		addOption(option);
 
-		var option:Option = new Option('Hide Opponent Notes',
-			'If checked, hides opponent arrows when playing',
+		var option:Option = new Option('Opponent Notes',
+			'If unchecked, opponent notes get hidden.',
 			'opponentStrums',
 			'bool',
-			false);
+			true);
 		addOption(option);
 
 		var option:Option = new Option('Ghost Tapping',
@@ -77,25 +70,16 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Remove Perfect! Note Judgement',
-			'If checked, removes Perfect! judgement',
-			'removePerfects',
+		var option:Option = new Option('Disable Reset Button',
+			"If checked, pressing Reset won't do anything.",
+			'noReset',
 			'bool',
 			false);
 		addOption(option);
 
-		/*
-		var option:Option = new Option('Note Camera Movement',
-			'If checked, camera will move when pressing notes',
-			'cameramoveonnotes',
-			'bool',					should fix this someday.
-			true);
-		addOption(option);
-		*/
-
-		var option:Option = new Option('Disable Reset Button',
-			"If checked, pressing Reset won't do anything.",
-			'noReset',
+		var option:Option = new Option('Check For Updates',
+			"Pretty useless option.\nEven if you enable it, it won't do anything cool.\nSorry no sorries!)",
+			'checkForUpdates',
 			'bool',
 			false);
 		addOption(option);
@@ -113,19 +97,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.decimals = 1;
 		option.onChange = onChangeHitsoundVolume;
 
-		var option:Option = new Option('Hold Notes Visibility',
-			'These lines after hold notes will be shown with selecter visibility',
-			'holdNoteVisibility',
-			'percent',
-			1);
-		addOption(option);
-		option.scrollSpeed = 1;
-		option.minValue = 0.0;
-		option.changeValue = 0.1;
-		option.maxValue = 1;
-		option.decimals = 1;
-
-		var option:Option = new Option('Opponent Lane Underlay Visibility',
+		var option:Option = new Option('Opp. Lane Underlay Visibility',
 			'Sets visibility of opponent\'s lane underlay.',
 			'opponentUnderlaneVisibility',
 			'percent',
@@ -148,7 +120,21 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 1;
 		option.changeValue = 0.1;
 		option.decimals = 1;
-		
+
+		var option:Option = new Option('Remove Perfect! Judgement',
+			'If checked, removes the "Perfect!" judgement.',
+			'removePerfects',
+			'bool',
+			false);
+		addOption(option);
+
+		var option:Option = new Option('Note Skin:',
+			'Currently there is 2 available skins,\n"Classic" is the default, and "Circle"- yeah, self-explainatory!',
+			'noteSkinSettings',
+			'string',
+			'OS',
+			['Classic', 'Circle']);
+		addOption(option);
 
 		var option:Option = new Option('Rating Offset',
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',

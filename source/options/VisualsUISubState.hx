@@ -42,6 +42,13 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		var option:Option = new Option('Themed Menu Background',
+			"If checked, the background for the main menu will be based on your current time.",
+			'themedmainmenubg',
+			'bool',
+			false);
+		addOption(option);
+
 		var option:Option = new Option('Hide HUD',
 			'If checked, hides most HUD elements.',
 			'hideHud',
@@ -49,59 +56,48 @@ class VisualsUISubState extends BaseOptionsMenu
 			false);
 		addOption(option);
 
-		var option:Option = new Option("Showcase Mode",
-			'If checked, hides entire HUD and enables botplay :D',
+		var option:Option = new Option('Showcase Mode',
+			'If toggled, the game will hide most of the HUD, and enables Botplay.',
 			'showcaseMode',
 			'bool',
 			false);
 		addOption(option);
 
-		var option:Option = new Option('Hide Watermark',
-			'If checked, hides watermark in left-bottom corner while playing song',
-			'hideWatermark',
+		
+		var option:Option = new Option('Display "ms" On Note Hit',
+			'If checked, a offset (in ms) will appear near notes when hit.',
+			'showMsText',
 			'bool',
-			false);
+			true);
 		addOption(option);
 
-		/*
-		var option:Option = new Option('Character Trail',
-			'If checked, adds trail behind character like in thorns',
-			'characterTrail',				shit lol. i made better finally
-			'bool',
-			false);
-		addOption(option);
+	   /*PlayState.hx (line 2344)
+        PlayState.hx (line 1467)
+		Uncaught Error: Null Object Reference
 		*/
 
-		var option:Option = new Option('Hide Score Text',
-			'If checked, hides score, accuracy and misses text under health bar in song',
-			'hideScoreText',
-			'bool',
-			false);
+		var option:Option = new Option('Score HUD:',
+			'"Simple" will enable the classic Psych look with the fewest modifications,\nwhile "Normal" will just enable the normal HUD used for OS Engine.',
+			'scoreHUD',
+			'string',
+			'Simple',
+			['Simple', 'Normal']);
 		addOption(option);
 
-		var option:Option = new Option('Icon Bop',
-			'Classic is Vanilla FnF icons bops, OS is OS Engine icons bops',
+		var option:Option = new Option('Watermark Type:',
+			'"Original" is just the vanilla OS watermark.\nWhile the other options slighty modify the watermark.',
+			'watermarkType',
+			'string',
+			'Original',
+			['Original', 'Song + OS Ver.', 'Song Only']);
+		addOption(option);
+
+		var option:Option = new Option('Icon Bops:',
+			'"Classic" enables the vanilla icon bops,\nwhile "OS" enabled the modified icon bops.',
 			'iconbops',
 			'string',
 			'OS',
 			['OS', 'Classic']);
-		addOption(option);
-
-		var option:Option = new Option('Score Text Position',
-			'Classic is Psych Engine position, New is OS Engine position',
-			'scoreposition',
-			'string',
-			'Classic',
-			['Classic', 'New']);
-		addOption(option);
-
-		var option:Option = new Option('Colorblind Filter',
-			'You can set colorblind filter (makes the game more playable for colorblind people)',
-			'colorblindMode',
-			'string',
-			'None', 
-			['None', 'Deuteranopia', 'Protanopia', 'Tritanopia']);
-		option.onChange = ColorblindFilters.applyFiltersOnGame;
 		addOption(option);
 		
 		var option:Option = new Option('Time Bar:',
@@ -109,7 +105,14 @@ class VisualsUISubState extends BaseOptionsMenu
 			'timeBarType',
 			'string',
 			'Time Left',
-			['Time Left', 'Time Elapsed', 'Song Name', 'OS Time Left', 'Disabled']);
+			['Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
+		addOption(option);
+
+		var option:Option = new Option('Hide Watermark',
+			"If checked, removes the song watermark used during songs.",
+			'hideWatermark',
+			'bool',
+			false);
 		addOption(option);
 
 		var option:Option = new Option('Flashing Lights',
@@ -117,6 +120,15 @@ class VisualsUISubState extends BaseOptionsMenu
 			'flashing',
 			'bool',
 			true);
+		addOption(option);
+
+		var option:Option = new Option('Colorblind Filter:',
+			'Enables the colorblind filter.\n(Helps make the game more playable for colorblind people)',
+			'colorblindMode',
+			'string',
+			'None', 
+			['None', 'Deuteranopia', 'Protanopia', 'Tritanopia']);
+		option.onChange = ColorblindFilters.applyFiltersOnGame;
 		addOption(option);
 
 		var option:Option = new Option('Camera Zooms',
@@ -154,32 +166,6 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
 		#end
-
-		var option:Option = new Option('Themed Main Menu Background',
-			'If checked, the background color of the main menu depends on the time of day.',
-			'themedmainmenubg',
-			'bool',
-			false);
-		option.defaultValue = false;
-		addOption(option);
-
-		/*
-		var option:Option = new Option('Auto Title Skip',
-			'If checked, automatically skips the title state.',
-			'autotitleskip',
-			'bool',
-			false);
-		option.defaultValue = false;
-		addOption(option);
-		*/
-
-		var option:Option = new Option('Note Skin',
-			"What note skin do you prefer for playing?",
-			'noteSkinSettings',
-			'string',
-			'Classic',
-			['Classic', 'Circle']);
-		addOption(option);
 		
 		var option:Option = new Option('Pause Screen Song:',
 			"What song do you prefer for the Pause Screen?",
@@ -198,6 +184,13 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 		#end
+
+		var option:Option = new Option('Combo Stacking',
+			"If unchecked, Ratings and Combo won't stack, saving on System Memory and making them easier to read",
+			'comboStacking',
+			'bool',
+			true);
+		addOption(option);
 
 		super();
 	}

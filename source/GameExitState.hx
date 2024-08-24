@@ -67,7 +67,7 @@ class GameExitState extends MusicBeatState
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 
-        menuText = new Alphabet(0, 0, "Quit the game?", true, false, 0, 1);
+        menuText = new Alphabet(0, 0, "Quit this game?", true, false, 0, 1);
         menuText.screenCenter();
         menuText.y -= 150;
 		menuText.alpha = 1;
@@ -106,7 +106,7 @@ class GameExitState extends MusicBeatState
 
 		if (controls.BACK) {
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new TitleState());
 		}
 
 		if (controls.ACCEPT) {

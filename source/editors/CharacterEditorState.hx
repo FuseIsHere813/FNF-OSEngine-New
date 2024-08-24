@@ -80,7 +80,7 @@ class CharacterEditorState extends MusicBeatState
 
 	override function create()
 	{
-		FlxG.sound.playMusic(Paths.music('breakfast'), 0.5);
+		//FlxG.sound.playMusic(Paths.music('breakfast'), 0.5);
 
 		camEditor = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -89,9 +89,9 @@ class CharacterEditorState extends MusicBeatState
 		camMenu.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camEditor);
-		FlxG.cameras.add(camHUD);
-		FlxG.cameras.add(camMenu);
-		FlxCamera.defaultCameras = [camEditor];
+		FlxG.cameras.add(camHUD, false);
+		FlxG.cameras.add(camMenu, false);
+		FlxG.cameras.setDefaultDrawTarget(camEditor, true);
 
 		bgLayer = new FlxTypedGroup<FlxSprite>();
 		add(bgLayer);
@@ -179,7 +179,6 @@ class CharacterEditorState extends MusicBeatState
 		var tabs = [
 			{name: 'Character', label: 'Character'},
 			{name: 'Animations', label: 'Animations'},
-			{name: 'Note Skin', label: 'Note Skin'},
 		];
 		UI_characterbox = new FlxUITabMenu(null, tabs, true);
 		UI_characterbox.cameras = [camMenu];
@@ -196,7 +195,6 @@ class CharacterEditorState extends MusicBeatState
 		addSettingsUI();
 
 		addCharacterUI();
-		addNoteSkinUI();
 		addAnimationsUI();
 		UI_characterbox.selected_tab_id = 'Character';
 
@@ -604,19 +602,6 @@ class CharacterEditorState extends MusicBeatState
 		UI_characterbox.addGroup(tab_group);
 	}
 
-	function addNoteSkinUI() {
-		var tab_group = new FlxUI(null, UI_box);
-		tab_group.name = "Note Skin";
-
-		tab_group.add(new FlxText(15, 30, 0, 'You can set a noteskin for this character'));
-		tab_group.add(new FlxText(15, 50, 0, 'Just drag a noteskin png and xml to mod/images'));
-		tab_group.add(new FlxText(15, 70, 0, 'With name "NOTE_charactername_assets"'));
-		tab_group.add(new FlxText(15, 100, 0, 'Also you can add custom notesplash (for player)'));
-		tab_group.add(new FlxText(15, 120, 0, 'Just drag a notesplash png and xml mod/images'));
-		tab_group.add(new FlxText(15, 140, 0, 'With name "noteSplashes_charactername'));
-		UI_characterbox.addGroup(tab_group);
-	}
-
 	var ghostDropDown:FlxUIDropDownMenuCustom;
 	var animationDropDown:FlxUIDropDownMenuCustom;
 	var animationInputText:FlxUIInputText;
@@ -789,7 +774,7 @@ class CharacterEditorState extends MusicBeatState
 				char.setGraphicSize(Std.int(char.width * char.jsonScale));
 				char.updateHitbox();
 				ghostChar.setGraphicSize(Std.int(ghostChar.width * char.jsonScale));
-				ghostChar.updateHitbox();	
+				ghostChar.updateHitbox();
 				reloadGhost();
 				updatePointerPos();
 
@@ -1102,6 +1087,7 @@ class CharacterEditorState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+		MusicBeatState.camBeat = FlxG.camera;
 		if(char.animationsArray[curAnim] != null) {
 			textAnim.text = char.animationsArray[curAnim].anim;
 

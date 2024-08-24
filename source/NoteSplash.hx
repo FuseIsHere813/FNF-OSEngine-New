@@ -3,9 +3,6 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
-#if sys
-import sys.FileSystem;
-#end
 
 class NoteSplash extends FlxSprite
 {
@@ -18,11 +15,6 @@ class NoteSplash extends FlxSprite
 
 		var skin:String = 'noteSplashes';
 		if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) skin = PlayState.SONG.splashSkin;
-		#if sys
-		if (FileSystem.exists(Paths.modsImages("noteSplashes_" + PlayState.SONG.player1))) {
-			skin = 'noteSplashes_' + PlayState.SONG.player1;
-		}
-		#end
 
 		loadAnims(skin);
 		
@@ -40,11 +32,6 @@ class NoteSplash extends FlxSprite
 		if(texture == null) {
 			texture = 'noteSplashes';
 			if(PlayState.SONG.splashSkin != null && PlayState.SONG.splashSkin.length > 0) texture = PlayState.SONG.splashSkin;
-			#if sys
-			if (FileSystem.exists(Paths.modsImages("noteSplashes_" + PlayState.SONG.player1))) {
-				texture = 'noteSplashes_' + PlayState.SONG.player1;
-			}
-			#end
 		}
 
 		if(textureLoaded != texture) {

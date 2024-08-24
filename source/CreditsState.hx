@@ -52,11 +52,6 @@ class CreditsState extends MusicBeatState
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
-		var versionShit:FlxText = new FlxText(FlxG.width * 0.7, FlxG.height - 24, 0, "Press CTRL for Official Discord Server", 12);
-		versionShit.scrollFactor.set();
-		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
-
 		#if MODS_ALLOWED
 		var path:String = 'modsList.txt';
 		if(FileSystem.exists(path))
@@ -87,21 +82,30 @@ class CreditsState extends MusicBeatState
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			['OS Engine Team'],
-			['notweuz_', 'weuz', 'Main Programmer of OS Engine', 'https://twitter.com/notweuz_', '8633F2'],
-			['nelifs', 'nelifs', 'Second Programmer and Designer of OS Engine', 'https://github.com/nelifs', '1C1C1C'],
-			['Cooljer', 'cooljer', 'Main Artist of OS Engine', 'https://twitter.com/cooljer_', '3360F2'],
+			['NotWeuz',		        'weuz',		        'Owner/Lead Programmer of OS Engine',						    'https://github.com/notweuz',	        '8633F2'],
+			['Nelifs',			    'nelifs',			'Main Designer/Programmer of OS Engine',						'https://github.com/nelifs',		    '444444'],
+			['Cooljer',				'cooljer',	        "Main Artist of OS Engine",					                    'https://github.com/cooljer',		    '3360F2'],
+			[''],
+			['OS Engine Contributors'],
+			['FuseIsHere',			'fuse',		        'Re-added everything to Psych 0.6.3.\nWith Eyesore support.',	'https://youtube.com/@FuseIsHere',		'567CB8'],
+			['OtisGaming54',	    'otisgaming',		'Ideas for the engine (lol omg ok-).',		  'https://www.youtube.com/@ExpungedGaming6969',		    '18782B'], // why is that link SOOOOOOO long omg (not your fault otis :])
+			['Jonnycat',		    'jonnycatmeow',		'Has done bug-fixes to the engine.',						    'https://github.com/JonnycatMeow',	    'D6D3AB'],
+			[''],
+			['Credits'],
+			['Jordan & Moxie',		'moxNjor',		    'For the Note Spam Section in Chart Editor','https://github.com/JordanSantiagoYT/FNF-JS-Engine',	    'D6D3AB'],
 			[''],
 			['Psych Engine Team'],
 			['Shadow Mario',		'shadowmario',		'Main Programmer of Psych Engine',								'https://twitter.com/Shadow_Mario_',	'444444'],
-			['RiverOaken',			'river',			'Main Artist/Animator of Psych Engine',							'https://twitter.com/RiverOaken',		'B42F71'],
-			['shubs',				'shubs',			'Additional Programmer of Psych Engine',						'https://twitter.com/yoshubs',			'5E99DF'],
+			['Riveren',			    'river',			'Main Artist/Animator of Psych Engine',							'https://twitter.com/Riverennn',		'B42F71'],
 			[''],
-			['Former Engine Members'],
+			['Former PE Members'],
 			['bb-panzu',			'bb',				'Ex-Programmer of Psych Engine',								'https://twitter.com/bbsub3',			'3E813A'],
+			['shubs',				'shubs',			"Ex-Programmer of Psych Engine.\nI don't support them.",	    'https://youtu.be/dQw4w9WgXcQ',			'5E99DF'],
 			[''],
 			['Engine Contributors'],
 			['iFlicky',				'flicky',			'Composer of Psync and Tea Time\nMade the Dialogue Sounds',		'https://twitter.com/flicky_i',			'9E29CF'],
 			['SqirraRNG',			'sqirra',			'Crash Handler and Base code for\nChart Editor\'s Waveform',	'https://twitter.com/gedehari',			'E1843A'],
+			['EliteMasterEric',		'mastereric',		'Runtime Shaders support',										'https://twitter.com/EliteMasterEric',	'FFBD40'],
 			['PolybiusProxy',		'proxy',			'.MP4 Video Loader Library (hxCodec)',							'https://twitter.com/polybiusproxy',	'DCD294'],
 			['KadeDev',				'kade',				'Fixed some cool stuff on Chart Editor\nand other PRs',			'https://twitter.com/kade0912',			'64A250'],
 			['Keoiki',				'keoiki',			'Note Splash Animations',										'https://twitter.com/Keoiki_',			'D2D2D2'],
@@ -122,16 +126,11 @@ class CreditsState extends MusicBeatState
 		for (i in 0...creditsStuff.length)
 		{
 			var isSelectable:Bool = !unselectableCheck(i);
-			var optionText:Alphabet = new Alphabet(0, 70 * i, creditsStuff[i][0], !isSelectable, false);
+			var optionText:Alphabet = new Alphabet(FlxG.width / 2, 300, creditsStuff[i][0], !isSelectable);
 			optionText.isMenuItem = true;
-			optionText.screenCenter(X);
-			optionText.yAdd -= 70;
-			if(isSelectable) {
-				optionText.x -= 70;
-			}
-			optionText.forceX = optionText.x;
-			//optionText.yMult = 90;
 			optionText.targetY = i;
+			optionText.changeX = false;
+			optionText.snapToPosition();
 			grpOptions.add(optionText);
 
 			if(isSelectable) {
@@ -151,6 +150,7 @@ class CreditsState extends MusicBeatState
 
 				if(curSelected == -1) curSelected = i;
 			}
+			else optionText.alignment = CENTERED;
 		}
 		
 		descBox = new AttachedSprite();
@@ -182,10 +182,6 @@ class CreditsState extends MusicBeatState
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
-		
-		if (FlxG.keys.pressed.CONTROL) {
-			CoolUtil.browserLoad('https://discord.gg/5vEHTRjNck');
-		}
 
 		if(!quitting)
 		{
@@ -199,12 +195,12 @@ class CreditsState extends MusicBeatState
 
 				if (upP)
 				{
-					changeSelection(-1 * shiftMult);
+					changeSelection(-shiftMult);
 					holdTime = 0;
 				}
 				if (downP)
 				{
-					changeSelection(1 * shiftMult);
+					changeSelection(shiftMult);
 					holdTime = 0;
 				}
 
@@ -237,7 +233,7 @@ class CreditsState extends MusicBeatState
 		
 		for (item in grpOptions.members)
 		{
-			if(!item.isBold)
+			if(!item.bold)
 			{
 				var lerpVal:Float = CoolUtil.boundTo(elapsed * 12, 0, 1);
 				if(item.targetY == 0)
@@ -245,12 +241,10 @@ class CreditsState extends MusicBeatState
 					var lastX:Float = item.x;
 					item.screenCenter(X);
 					item.x = FlxMath.lerp(lastX, item.x - 70, lerpVal);
-					item.forceX = item.x;
 				}
 				else
 				{
 					item.x = FlxMath.lerp(item.x, 200 + -40 * Math.abs(item.targetY), lerpVal);
-					item.forceX = item.x;
 				}
 			}
 		}
