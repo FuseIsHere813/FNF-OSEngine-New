@@ -3239,7 +3239,6 @@ class PlayState extends MusicBeatState
 			screenshader.update(elapsed);
 			if(disableTheTripper)
 			{
-				screenshader.Enabled = false;
 				screenshader.shader.uampmul.value[0] -= (elapsed / 2);
 			}
 
@@ -3744,6 +3743,19 @@ class PlayState extends MusicBeatState
 		DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
 	}
+
+	public function openChangersMenu()
+		{
+			persistentUpdate = false;
+			persistentDraw = true;
+			paused = true;
+
+			if(FlxG.sound.music != null) {
+				FlxG.sound.music.pause();
+				vocals.pause();
+			}
+			openSubState(new GameplayChangersSubstate());
+		}
 
 	function openChartEditor()
 	{
@@ -4588,7 +4600,8 @@ class PlayState extends MusicBeatState
 			pixelShitPart1 = 'pixelUI/';
 			pixelShitPart2 = '-pixel';
 		}
-
+		
+        if (!cpuControlled) {
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating.image + pixelShitPart2));
 		rating.cameras = [camHUD];
 		rating.screenCenter();
@@ -4734,6 +4747,7 @@ class PlayState extends MusicBeatState
 			startDelay: Conductor.crochet * 0.002 / playbackRate
 		});
 	}
+}
 
 	public var strumsBlocked:Array<Bool> = [];
 	private function onKeyPress(event:KeyboardEvent):Void
