@@ -48,6 +48,8 @@ class Main extends Sprite
 	{
 		super();
 
+		dubBossman();
+
 		if (stage != null)
 		{
 			init();
@@ -67,16 +69,23 @@ class Main extends Sprite
 
 		#if (flixel >= "5.3.0")
 		#if (haxe < "4.2.5")
-		#error '"OS Engine 1.6" is not compatible with Haxe versions older than 4.2.5 due to dropped support for 4.2.4 (or below), supported Flixel versions are 5.2.2 or lower.'
+		#error '"OS Engine 1.6" is not compatible with Haxe versions older than 4.2.5 when using Flixel 5.3, use Flixel 5.2.2 or lower.'
 		#end // flixel 5.3 support because y'all be tweaking with 4.2.4 😜
-		#end
-
-		#if (flixel < "5.2.2")
-			trace('Using Flixel 5.2.2 or below: i think you deserve a huge W blud');
 		#end
 
 		setupGame();
 	}
+
+	
+	public function dubBossman() // testing shit
+		{
+			#if (flixel < "5.2.2")
+			trace('i think you deserve a huge W blud (flixel 5.2.2 or below found)');
+			#if (haxe < "4.2.5")
+			trace('nice haxe version (4.2.4 or below found)');
+			#end
+			#end
+		}
 
 	private function setupGame():Void
 	{
@@ -150,6 +159,7 @@ class Main extends Sprite
 
 		File.saveContent(path, errMsg + "\n");
 
+		Sys.println("Uncaught Exception! (whatthefridge)");
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 

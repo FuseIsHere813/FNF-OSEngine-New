@@ -1595,7 +1595,8 @@ class PlayState extends MusicBeatState
 		CustomFadeTransition.nextCamera = camOther;
 
 		if (ClientPrefs.showcaseMode) {
-			camHUD.visible = false;
+			scoreTxt.visible = false;
+			botplayTxt.visible = false;
 			instance.cpuControlled = true;
 		}
 	}
