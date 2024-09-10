@@ -65,6 +65,16 @@ class Main extends Sprite
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 		}
 
+		#if (flixel >= "5.3.0")
+		#if (haxe < "4.2.5")
+		#error '"OS Engine 1.6" is not compatible with Haxe versions older than 4.2.5 due to dropped support for 4.2.4 (or below), supported Flixel versions are 5.2.2 or lower.'
+		#end // flixel 5.3 support because y'all be tweaking with 4.2.4 😜
+		#end
+
+		#if (flixel < "5.2.2")
+			trace('Using Flixel 5.2.2 or below: i think you deserve a huge W blud');
+		#end
+
 		setupGame();
 	}
 

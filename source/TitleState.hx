@@ -28,11 +28,10 @@ import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-#if (flixel < "5.3.0")
-import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
-#end
 #if (flixel >= "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
 #end
 import flixel.system.ui.FlxSoundTray;
 import flixel.text.FlxText;
@@ -43,7 +42,6 @@ import flixel.util.FlxTimer;
 import flixel.addons.display.FlxBackdrop;
 import lime.app.Application;
 import openfl.Assets;
-
 
 using StringTools;
 typedef TitleData =
