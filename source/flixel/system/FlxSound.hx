@@ -21,7 +21,7 @@ import flash.utils.ByteArray;
 import openfl.utils.AssetType;
 #end
 
-#if (flixel < "5.2.2")
+#if (flixel <= "5.2.2")
 /**
  * This is the universal flixel sound object, used for streaming, music, and sound effects.
  */
