@@ -25,6 +25,9 @@ import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import Controls;
 import flixel.addons.display.FlxBackdrop;
+#if (flixel_addons >= "3.0.0")
+import flixel.util.FlxAxes;
+#end
 import flash.system.System;
 
 using StringTools;
@@ -58,6 +61,16 @@ class GameExitState extends MusicBeatState
 		DiscordClient.changePresence("Game Closing Menu", null);
 		#end
 
+		#if (flixel_addons >= "3.0.0")
+        var bg:FlxBackdrop = new FlxBackdrop(Paths.image('loading'), FlxAxes.XY);
+		bg.velocity.set(200, 110);
+		bg.alpha = 0.5;
+		bg.updateHitbox();
+
+		bg.screenCenter();
+		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		add(bg);
+		#else
         var bg:FlxBackdrop = new FlxBackdrop(Paths.image('loading'), 0.2, 0, true, true);
 		bg.velocity.set(200, 110);
 		bg.alpha = 0.5;
@@ -66,6 +79,7 @@ class GameExitState extends MusicBeatState
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
+		#end // temp fix for flixel addons 3.0
 
         menuText = new Alphabet(0, 0, "Quit this game?", true, false, 0, 1);
         menuText.screenCenter();

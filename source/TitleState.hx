@@ -40,6 +40,9 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.addons.display.FlxBackdrop;
+#if (flixel_addons >= "3.0.0")
+import flixel.util.FlxAxes;
+#end
 import lime.app.Application;
 import openfl.Assets;
 
@@ -336,12 +339,22 @@ class TitleState extends MusicBeatState
 		}
 		gfDance.antialiasing = ClientPrefs.globalAntialiasing;
 		
+		#if (flixel_addons >= "3.0.0")
+        titlestatebg = new FlxBackdrop(Paths.image('loading'), FlxAxes.XY);
+		titlestatebg.velocity.set(200, 110);
+		titlestatebg.alpha = 0.5;
+		titlestatebg.updateHitbox();
+
+		titlestatebg.screenCenter(X);
+		add(titlestatebg);
+		#else
 		titlestatebg = new FlxBackdrop(Paths.image('loading'), 0.2, 0, true, true);
 		titlestatebg.velocity.set(200, 110);
 		titlestatebg.updateHitbox();
 		titlestatebg.alpha = 0.5;
 		titlestatebg.screenCenter(X);
 		add(titlestatebg);
+		#end
 		titlestatebg.shader = swagShader.shader;
 
 		add(gfDance);
