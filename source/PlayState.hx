@@ -311,6 +311,9 @@ class PlayState extends MusicBeatState
 
 	var msTimeTxt:FlxText;
 	var msTimeTxtTween:FlxTween;
+
+	public var judgementCounter:FlxText;
+	public var judgementAlt:FlxText;
 	
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -1320,6 +1323,22 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
+		judgementCounter = new FlxText(20, 0, 0, "", 20); 
+		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); 
+		judgementCounter.borderSize = 2; 
+		judgementCounter.borderQuality = 2; 
+		judgementCounter.scrollFactor.set(); 
+		judgementCounter.screenCenter(Y); 
+		judgementCounter.text = 'Perfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+
+		if (ClientPrefs.removePerfects) {
+			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}'; 
+		}
+
+		if (ClientPrefs.judgementCounter) { 
+			add(judgementCounter);
+		}
+
 		if (ClientPrefs.scoreHUD == 'Simple') {
 		songTxt = new FlxText(12, FlxG.height - 24, 0, "", 8);
 		songTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1374,6 +1393,7 @@ class PlayState extends MusicBeatState
 		doof.cameras = [camHUD];
 		laneunderlay.cameras = [camHUD];
 		laneunderlayOp.cameras = [camHUD];
+		judgementCounter.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -5755,6 +5775,10 @@ class PlayState extends MusicBeatState
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
+		judgementCounter.text = 'Perfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		if (ClientPrefs.removePerfects) {
+		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		}
 	}
 
 	#if ACHIEVEMENTS_ALLOWED

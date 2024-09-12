@@ -21,6 +21,7 @@ class ClientPrefs {
 	public static var noteSkinSettings:String = 'Classic';
 	public static var watermarkType:String = 'Original';
 	public static var noteColorStyle:String = 'Normal';
+	public static var judgementCounter:Bool = true;
 	// END
 	public static var downScroll:Bool = false;
 	public static var middleScroll:Bool = false;
@@ -160,6 +161,7 @@ class ClientPrefs {
 		FlxG.save.data.watermarkType = watermarkType;
 		FlxG.save.data.noteSkinSettings = noteSkinSettings;
 		FlxG.save.data.noteColorStyle = noteColorStyle;
+		FlxG.save.data.judgementCounter = judgementCounter;
 		// END
 		
 	
@@ -229,6 +231,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.themedmainmenubg != null) {
 			themedmainmenubg = FlxG.save.data.themedmainmenubg;
+		}
+		if(FlxG.save.data.judgementCounter != null) {
+			judgementCounter = FlxG.save.data.judgementCounter;
 		}
 		// END
 		if(FlxG.save.data.camZooms != null) {

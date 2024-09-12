@@ -121,6 +121,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		option.decimals = 1;
 
+		var option:Option = new Option('Judgement Counter',
+			'If checked, displays a counter of notes you hit separated by ratings, this also includes misses and total note count.',
+			'judgementCounter',
+			'bool',
+			true);
+		addOption(option);
+
 		var option:Option = new Option('Remove Perfect! Judgement',
 			'If checked, removes the "Perfect!" judgement.',
 			'removePerfects',
