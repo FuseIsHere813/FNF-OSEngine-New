@@ -2781,7 +2781,7 @@ class FunkinLua {
 		// deprecated shaders
 
 		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String,chromeOffset:Float = 0.005) {
-
+			PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
 			luaTrace('addChromaticAbberationEffect is deprecated in favor of Runtime Shaders!', false, true);
 		});
 		
