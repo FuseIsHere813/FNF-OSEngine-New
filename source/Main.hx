@@ -39,6 +39,20 @@ class Main extends Sprite
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
+	public static var awesomeCoolSecret:Array<String> = [
+		"whatthefridge",
+		"aw don't worry it's gonna be fin- wait...",
+		"are you sirius rwight neow?",
+		"oh... that's a null object reference :frowning2:",
+		"have you ever heard of null function reference's brother named null lua refernce?",
+		"oh shit it's a null reference NOOOOOOOOO",
+		"pain",
+		"did you forget a comma??? womp womp /j",
+		"womp womp vro",
+		":broken_heart:",
+		"my bad, i feel disappointed too"
+	];
+
 	public static function main():Void
 	{
 		Lib.current.addChild(new Main());
@@ -130,6 +144,7 @@ class Main extends Sprite
 	function onCrash(e:UncaughtErrorEvent):Void
 	{
 		var errMsg:String = "";
+		var theStack:String = "";
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
@@ -144,7 +159,8 @@ class Main extends Sprite
 			switch (stackItem)
 			{
 				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
+					theStack += file + " (line " + line + ")\n";
+					errMsg = theStack;
 				default:
 					Sys.println(stackItem);
 			}
@@ -159,9 +175,11 @@ class Main extends Sprite
 
 		File.saveContent(path, errMsg + "\n");
 
-		Sys.println("Uncaught Exception! (whatthefridge)");
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
+		Sys.println("Uncaught Exception! (" + 
+		Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n");
+		Sys.println(e.error + "\n");
+		Sys.println(theStack);
+		Sys.println("The engine has saved a crash log to " + Path.normalize(path) + ".\nSend that when making a GitHub issue necessarily!"); // Command Prompt Error Log: Overhauled
 
 		Application.current.window.alert(errMsg, "Error!" + " OS Engine v" + MainMenuState.osEngineVersion);
 		DiscordClient.shutdown();
