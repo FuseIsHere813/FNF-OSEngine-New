@@ -1369,7 +1369,7 @@ class PlayState extends MusicBeatState
 			#if desktop
 		    songTxt.text = curSong + " (" + storyDifficultyText + ") " + "| OS " + MainMenuState.osEngineVersion;
 			#else
-			songTxt.text = curSong + "| OS " + MainMenuState.osEngineVersion
+			songTxt.text = curSong + "| OS " + MainMenuState.osEngineVersion;
 			#end
 		}
 		else if (ClientPrefs.watermarkType == 'Song + OS Ver.') {

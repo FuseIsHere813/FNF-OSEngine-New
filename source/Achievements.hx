@@ -129,6 +129,9 @@ class AchievementObject extends FlxSpriteGroup {
 		add(achievementText);
 		add(achievementIcon);
 
+		#if (haxe >= "4.3.0")
+		@:haxe.warning("-WDeprecated")
+		#end
 		var cam:Array<FlxCamera> = FlxCamera.defaultCameras;
 		if(camera != null) {
 			cam = [camera];
