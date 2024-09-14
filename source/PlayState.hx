@@ -1824,21 +1824,33 @@ class PlayState extends MusicBeatState
 					for(i in camHUDShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camHUD.setFilters(newCamEffects);
+					#else
+					camHUD.filters = newCamEffects;
+					#end
 			case 'camother' | 'other':
 					camOtherShaders.push(effect);
 					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
 					for(i in camOtherShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camOther.setFilters(newCamEffects);
+					#else
+					camOther.filters = newCamEffects;
+					#end
 			case 'camgame' | 'game':
 					camGameShaders.push(effect);
 					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
 					for(i in camGameShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camGame.setFilters(newCamEffects);
+					#else
+					camGame.filters = newCamEffects;
+					#end
 			default:
 				if(modchartSprites.exists(cam)) {
 					Reflect.setProperty(modchartSprites.get(cam),"shader",effect.shader);
@@ -1860,14 +1872,22 @@ class PlayState extends MusicBeatState
     for(i in camHUDShaders){
       newCamEffects.push(new ShaderFilter(i.shader));
     }
+	#if (flixel < "5.4.0")
     camHUD.setFilters(newCamEffects);
+	#else
+	camHUD.filters = newCamEffects;
+	#end
 			case 'camother' | 'other': 
 					camOtherShaders.remove(effect);
 					var newCamEffects:Array<BitmapFilter>=[];
 					for(i in camOtherShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camOther.setFilters(newCamEffects);
+					#else
+					camOther.filters = newCamEffects;
+					#end
 			default: 
 				if(modchartSprites.exists(cam)) {
 					Reflect.setProperty(modchartSprites.get(cam),"shader",null);
@@ -1887,19 +1907,35 @@ class PlayState extends MusicBeatState
 			case 'camhud' | 'hud': 
 				camHUDShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camHUD.setFilters(newCamEffects);
+				#else
+				camHUD.filters = newCamEffects;
+				#end
 			case 'camother' | 'other': 
 				camOtherShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camOther.setFilters(newCamEffects);
+				#else
+				camOther.filters = newCamEffects;
+				#end
 			case 'camgame' | 'game': 
 				camGameShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camGame.setFilters(newCamEffects);
+				#else
+				camGame.filters = newCamEffects;
+				#end
 			default: 
 				camGameShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camGame.setFilters(newCamEffects);
+				#else
+				camGame.filters = newCamEffects;
+				#end
 		}	
   }
 
@@ -3259,8 +3295,11 @@ class PlayState extends MusicBeatState
 			{
 				disableTheTripper = true;
 			}
-
+			#if (flixel < "5.4.0")
 			FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
+			#else
+			FlxG.camera.filters = [new ShaderFilter(screenshader.shader)];
+			#end
 			screenshader.update(elapsed);
 			if(disableTheTripper)
 			{
@@ -4252,7 +4291,11 @@ class PlayState extends MusicBeatState
 					var speedRainbow:Float = Std.parseFloat(value2);
 					disableTheTripper = false;
 					disableTheTripperAt = timeRainbow;
+					#if (flixel < "5.4.0")
 					FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
+					#else
+					FlxG.camera.filters = [new ShaderFilter(screenshader.shader)];
+					#end
 					screenshader.waveAmplitude = 1;
 					screenshader.waveFrequency = 2;
 					screenshader.waveSpeed = speedRainbow * playbackRate;
