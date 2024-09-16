@@ -30,11 +30,10 @@ import flixel.group.FlxSpriteGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-#if (flixel < "5.3.0")
-import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
-#end
 #if (flixel >= "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
 #end
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -160,6 +159,17 @@ class ChartingState extends MusicBeatState
 
 	var vocals:FlxSound = null;
 
+	// Rozebud Here
+
+	var lilStage:FlxSprite;
+	var lilBf:FlxSprite;
+	var lilOpp:FlxSprite;
+
+	var lilBuddiesColorSwap:ColorSwap;
+	var lilBuddies2ColorSwap:ColorSwap;
+
+	// end
+
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
 
@@ -264,6 +274,44 @@ class ChartingState extends MusicBeatState
 		bg.scrollFactor.set();
 		bg.color = 0xFF222222;
 		add(bg);
+
+		lilStage = new FlxSprite(32, 432).loadGraphic(Paths.image("chartEditor/lilStage")); // lil' buddies
+		lilStage.scrollFactor.set();
+		add(lilStage);
+
+		lilBf = new FlxSprite(32, 432).loadGraphic(Paths.image(ClientPrefs.noteColorStyle == 'Normal' ? "chartEditor/lilBf" : "chartEditor/lilBfRed"), true, 300, 256);
+		lilBf.animation.add("idle", [0, 1], 12, true);
+		lilBf.animation.add("0", [3, 4, 5], 12, false);
+		lilBf.animation.add("1", [6, 7, 8], 12, false);
+		lilBf.animation.add("2", [9, 10, 11], 12, false);
+		lilBf.animation.add("3", [12, 13, 14], 12, false);
+		lilBf.animation.add("yeah", [17, 20, 23], 12, false);
+		lilBf.animation.play("idle");
+		lilBf.animation.finishCallback = function(name:String){
+			lilBf.animation.play(name, true, false, lilBf.animation.getByName(name).numFrames - 2);
+		}
+		lilBf.scrollFactor.set();
+		add(lilBf);
+
+		lilBuddiesColorSwap = new ColorSwap();
+		lilBuddies2ColorSwap = new ColorSwap();
+		lilBf.shader = lilBuddiesColorSwap.shader;
+		lilOpp = new FlxSprite(32, 432).loadGraphic(Paths.image(ClientPrefs.noteColorStyle == 'Normal' ? "chartEditor/lilOpp" : "chartEditor/lilOppRed"), true, 300, 256);
+		lilOpp.animation.add("idle", [0, 1], 12, true);
+		lilOpp.animation.add("0", [3, 4, 5], 12, false);
+		lilOpp.animation.add("1", [6, 7, 8], 12, false);
+		lilOpp.animation.add("2", [9, 10, 11], 12, false);
+		lilOpp.animation.add("3", [12, 13, 14], 12, false);
+		lilOpp.animation.play("idle");
+		lilOpp.animation.finishCallback = function(name:String){
+			lilOpp.animation.play(name, true, false, lilOpp.animation.getByName(name).numFrames - 2);
+		}
+		lilOpp.scrollFactor.set();
+		add(lilOpp);
+		lilOpp.shader = lilBuddies2ColorSwap.shader;
+		lilBf.visible = FlxG.save.data.lilBuddies;
+		lilOpp.visible = FlxG.save.data.lilBuddies;
+		lilStage.visible = FlxG.save.data.lilBuddies;
 
 		gridLayer = new FlxTypedGroup<FlxSprite>();
 		add(gridLayer);
@@ -468,7 +516,11 @@ class ChartingState extends MusicBeatState
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', function()
 		{
 			PlayState.SONG = Song.parseJSONshit(FlxG.save.data.autosave);
+			#if (flixel >= "5.6.0")
+			FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+			#else
 			MusicBeatState.resetState();
+			#end
 		});
 
 		var loadEventJson:FlxButton = new FlxButton(loadAutosaveBtn.x, loadAutosaveBtn.y + 30, 'Load Events', function()
@@ -565,7 +617,7 @@ class ChartingState extends MusicBeatState
 		stepperBPM.name = 'song_bpm';
 		blockPressWhileTypingOnStepper.push(stepperBPM);
 
-		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, stepperBPM.y + 35, 0.1, 1, 0.1, 10, 1);
+		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, stepperBPM.y + 35, 0.1, 1, 0.1, 100, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 		blockPressWhileTypingOnStepper.push(stepperSpeed);
@@ -737,7 +789,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(new FlxText(gfVersionDropDown.x, gfVersionDropDown.y - 15, 0, 'Girlfriend:'));
 		tab_group_song.add(new FlxText(player1DropDown.x, player1DropDown.y - 15, 0, 'Boyfriend:'));
 		tab_group_song.add(new FlxText(stageDropDown.x, player2DropDown.y - 15, 0, 'Stage:'));
-		tab_group_song.add(new FlxText(healthDrainValue.x, healthDrainValue.y - 17, 0, 'Health Drain on Opp. Notehit:'));
+		tab_group_song.add(new FlxText(healthDrainValue.x, healthDrainValue.y - 17, 0, 'Health Drain (For Opp.)'));
 		tab_group_song.add(new FlxText(noteSkinInputText.x, noteSkinInputText.y - 15, 0, 'Note Texture:'));
 		tab_group_song.add(new FlxText(noteSplashesInputText.x, noteSplashesInputText.y - 15, 0, 'Note Splashes Texture:'));
 		tab_group_song.add(player2DropDown);
@@ -1455,6 +1507,9 @@ class ChartingState extends MusicBeatState
 	var waveformUseInstrumental:FlxUICheckBox;
 	var waveformUseVoices:FlxUICheckBox;
 	#end
+
+	var lilBuddiesBox:FlxUICheckBox;
+
 	var instVolume:FlxUINumericStepper;
 	var voicesVolume:FlxUINumericStepper;
 	function addChartingUI() {
@@ -1505,6 +1560,17 @@ class ChartingState extends MusicBeatState
 		{
 			FlxG.save.data.mouseScrollingQuant = mouseScrollingQuant.checked;
 			mouseQuant = FlxG.save.data.mouseScrollingQuant;
+		};
+
+		lilBuddiesBox = new FlxUICheckBox(130, mouseScrollingQuant.y, null, null, "Lil' Buddies", 100);
+		if (FlxG.save.data.lilBuddies == null) FlxG.save.data.lilBuddies = false;
+		lilBuddiesBox.checked = FlxG.save.data.lilBuddies;
+		lilBuddiesBox.callback = function()
+		{
+			FlxG.save.data.lilBuddies = lilBuddiesBox.checked;
+			lilBf.visible = lilBuddiesBox.checked;
+			lilOpp.visible = lilBuddiesBox.checked;
+			lilStage.visible = lilBuddiesBox.checked;
 		};
 
 		check_vortex = new FlxUICheckBox(10, 160, null, null, "Vortex Editor (BETA)", 100);
@@ -1607,6 +1673,7 @@ class ChartingState extends MusicBeatState
 		tab_group_chart.add(waveformUseInstrumental);
 		tab_group_chart.add(waveformUseVoices);
 		#end
+		tab_group_chart.add(lilBuddiesBox);
 		tab_group_chart.add(instVolume);
 		tab_group_chart.add(voicesVolume);
 		tab_group_chart.add(check_mute_inst);
@@ -2034,6 +2101,8 @@ class ChartingState extends MusicBeatState
 				if (FlxG.sound.music.playing)
 				{
 					FlxG.sound.music.pause();
+					lilBf.animation.play("idle");
+					lilOpp.animation.play("idle");
 					if(vocals != null) vocals.pause();
 				}
 				else
@@ -2045,6 +2114,8 @@ class ChartingState extends MusicBeatState
 						vocals.play();
 					}
 					FlxG.sound.music.play();
+					lilBf.animation.play("idle");
+					lilOpp.animation.play("idle");
 				}
 			}
 
@@ -2059,6 +2130,8 @@ class ChartingState extends MusicBeatState
 			if (FlxG.mouse.wheel != 0)
 			{
 				FlxG.sound.music.pause();
+				lilBf.animation.play("idle");
+				lilOpp.animation.play("idle");
 				if (!mouseQuant)
 					FlxG.sound.music.time -= (FlxG.mouse.wheel * Conductor.stepCrochet*0.8);
 				else
@@ -2089,6 +2162,8 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.pressed.W || FlxG.keys.pressed.S)
 			{
 				FlxG.sound.music.pause();
+				lilBf.animation.play("idle");
+				lilOpp.animation.play("idle");
 
 				var holdingShift:Float = 1;
 				if (FlxG.keys.pressed.CONTROL) holdingShift = 0.25;
@@ -2333,6 +2408,19 @@ class ChartingState extends MusicBeatState
 						}
 
 						data = note.noteData;
+						if (note.mustPress && lilBuddiesBox.checked) {
+							lilBuddiesColorSwap.hue = note.colorSwap.hue;
+							lilBuddiesColorSwap.saturation = note.colorSwap.saturation;
+							lilBuddiesColorSwap.brightness = note.colorSwap.brightness;
+							lilBf.animation.play("" + (data % 4), true);
+							}
+							if (!note.mustPress && lilBuddiesBox.checked) 
+							{
+								lilBuddies2ColorSwap.hue = note.colorSwap.hue;
+								lilBuddies2ColorSwap.saturation = note.colorSwap.saturation;
+								lilBuddies2ColorSwap.brightness = note.colorSwap.brightness;
+							lilOpp.animation.play("" + (data % 4), true);
+							}
 						if(note.mustPress != _song.notes[curSec].mustHitSection)
 						{
 							data += 4;
@@ -2712,6 +2800,9 @@ class ChartingState extends MusicBeatState
 
 	function resetSection(songBeginning:Bool = false):Void
 	{
+		lilBf.animation.play("idle");
+		lilOpp.animation.play("idle");
+		
 		updateGrid();
 
 		FlxG.sound.music.pause();
@@ -2739,6 +2830,9 @@ class ChartingState extends MusicBeatState
 	{
 		if (_song.notes[sec] != null)
 		{
+			lilBf.animation.play("idle");
+			lilOpp.animation.play("idle");
+
 			curSec = sec;
 			if (updateMusic)
 			{
@@ -3265,7 +3359,11 @@ class ChartingState extends MusicBeatState
 					}
 				}
 				else PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
+				#if (flixel >= "5.6.0")
+				FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+				#else
 				MusicBeatState.resetState();
+				#end
 			}
 			catch(e)
 			{
@@ -3293,49 +3391,6 @@ class ChartingState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('holyNO'));
 			}
 		}
-
-			/*function loadJson(song:String):Void
-	{
-		//shitty null fix, i fucking hate it when this happens
-		//make it look sexier if possible
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != CoolUtil.defaultDifficulty) {
-			if(CoolUtil.difficulties[PlayState.storyDifficulty] == null){
-				PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
-			}else{
-				PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-" + CoolUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
-			}
-		}else{
-		PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
-		}
-		MusicBeatState.resetState();
-	}
-	
-	catch(e) // Credits to Psych 0.7
-		{
-			trace('ERROR! $e');
-
-			var errorStr:String = e.toString();
-			if(errorStr.startsWith('[file_contents,assets/data/')) errorStr = 'Missing file: ' + errorStr.substring(27, errorStr.length-1); //Missing chart
-			
-			if(missingText == null)
-			{
-				missingText = new FlxText(50, 0, FlxG.width - 100, '', 24);
-				missingText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-				missingText.scrollFactor.set();
-				add(missingText);
-			}
-			else missingTextTimer.cancel();
-
-			missingText.text = 'ERROR WHILE LOADING CHART:\n$errorStr';
-			missingText.screenCenter(Y);
-
-			missingTextTimer = new FlxTimer().start(5, function(tmr:FlxTimer) {
-				remove(missingText);
-				missingText.destroy();
-			});
-			FlxG.sound.play(Paths.sound('holyNO'));
-		}
-    }*/
 
 	function autosaveSong():Void
 	{

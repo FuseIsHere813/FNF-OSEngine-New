@@ -20,11 +20,11 @@ jobs:
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2.3.0
+      - uses: actions/checkout@main
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.1
+          haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
       - name: Install Haxelib
         run: |
@@ -32,12 +32,12 @@ jobs:
           haxelib install hxcpp 4.2.1 > nul
           haxelib install lime 8.0.2
           haxelib install openfl 9.2.2
-          haxelib install flixel 4.11.0
+          haxelib install flixel 5.3.1
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools 1.5.1
           haxelib install flixel-ui 2.4.0
-          haxelib install flixel-addons 2.11.0
+          haxelib install flixel-addons 3.2.2
           haxelib install tjson
           haxelib install hscript 2.4.0
           haxelib install hxjsonast
@@ -48,8 +48,8 @@ jobs:
           haxelib install hxcpp-debug-server
           haxelib set lime 8.0.2 -always
           haxelib set openfl 9.2.2 -always
-          haxelib set flixel-addons 2.11.0 -always
-          haxelib set flixel 4.11.0 -always
+          haxelib set flixel-addons 3.2.2 -always
+          haxelib set flixel 5.3.1 -always
           haxelib list
         shell: cmd
       - name: Create Version Tag
@@ -57,7 +57,7 @@ jobs:
       - name: Compile
         run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
-        uses: actions/upload-artifact@v2.2.4
+        uses: actions/upload-artifact@main
         with:
           name: windowsBuild
           path: export/release/windows/bin

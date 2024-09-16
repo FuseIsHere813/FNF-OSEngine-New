@@ -28,16 +28,46 @@ using StringTools;
 
 class Main extends Sprite
 {
-	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
-	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-	var framerate:Int = 60; // How many frames per second the game should run at.
-	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
-	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
+	var game = { // credit to crowplexus for this variable array.
+		width: 1280, // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
+		height: 720, // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
+		initialState: TitleState, // The FlxState the game starts with.
+		zoom: -1.0, // If -1, zoom is automatically calculated to fit the window dimensions
+		framerate: 60, // How many frames per second the game should run at.
+		skipSplash: true, // Whether to skip the flixel splash screen that appears in release mode.
+		startFullscreen: false // Whether to start the game in fullscreen on desktop targets
+	};
+
 	public static var fpsVar:FPS;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
+
+	public static var awesomeCoolSecret:Array<String> = [
+		"whatthefridge",
+		"aw don't worry it's gonna be fin- wait...",
+		"are you sirius rwight neow?",
+		"oh... that's a null object reference :frowning2:",
+		"have you ever heard of null function reference's brother named null lua refernce?",
+		"oh shit it's a null reference NOOOOOOOOO",
+		"pain",
+		"did you forget a comma??? womp womp /j",
+		"womp womp vro",
+		":broken_heart:",
+		"my bad, i feel disappointed too",
+		"so you see... after the engine crashed i had no bitches",
+		"hi fellow lime test windows user!",
+		"psst.. this engine is the community update for os...",
+		"H",
+		"nonono not now this engine was invinci- wait, this engine WASN'T invinicble before :fearful:",
+		"zoinks",
+		"The object does not the property 'XBOX LIVE!!!'",
+		"this does not null my reference.",
+		"why is the fbi at my door",
+		'Uncaught Error: sorry, I already had bitches',
+		"wanna play some ping pong",
+		"null FORTNITE BALLS reference",
+		"the best error message is right here, the 69th line WOW HEHEHEHA I AM FUNNI!11!11!!!!!"
+	];
 
 	public static function main():Void
 	{
@@ -73,17 +103,17 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
-		if (zoom == -1)
+		if (game.zoom == -1)
 		{
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
+			var ratioX:Float = stageWidth / game.width;
+			var ratioY:Float = stageHeight / game.height;
+			game.zoom = Math.min(ratioX, ratioY);
+			game.width = Math.ceil(stageWidth / game.zoom);
+			game.height = Math.ceil(stageHeight / game.zoom);
 		}
 	
 		ClientPrefs.loadDefaultKeys();
-		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
+		addChild(new FlxGame(game.width, game.height, game.initialState, #if (flixel < "5.0.0") game.zoom, #end game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
 		#if !mobile
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
@@ -111,6 +141,7 @@ class Main extends Sprite
 	function onCrash(e:UncaughtErrorEvent):Void
 	{
 		var errMsg:String = "";
+		var theStack:String = "";
 		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
 		var dateNow:String = Date.now().toString();
@@ -118,14 +149,15 @@ class Main extends Sprite
 		dateNow = dateNow.replace(" ", "_");
 		dateNow = dateNow.replace(":", "'");
 
-		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
+		path = "./crash/" + "OSEngine_" + dateNow + ".txt";
 
 		for (stackItem in callStack)
 		{
 			switch (stackItem)
 			{
 				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
+					theStack += file + " (line " + line + ")\n";
+					errMsg = theStack;
 				default:
 					Sys.println(stackItem);
 			}
@@ -138,14 +170,30 @@ class Main extends Sprite
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");
 
-		File.saveContent(path, errMsg + "\n");
+		File.saveContent(path, 
+			"Error! (" + Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n\n" + errMsg + "\n");
 
-		Sys.println(errMsg);
-		Sys.println("Crash dump saved in " + Path.normalize(path));
+		Sys.println("Uncaught Exception! (" + 
+		Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n");
+		Sys.println(e.error + "\n");
+		Sys.println(theStack);
+		Sys.println("The engine has saved a crash log to " + Path.normalize(path) + ".\nSend that when making a GitHub issue necessarily!"); // Command Prompt Error Log: Overhauled
 
 		Application.current.window.alert(errMsg, "Error!" + " OS Engine v" + MainMenuState.osEngineVersion);
 		DiscordClient.shutdown();
 		Sys.exit(1);
 	}
 	#end
+
+	function versionChecking() {
+		#if (flixel >= "5.3.0")
+		#if (haxe < "4.2.5")
+		#error '"OS Engine 1.6" is not compatible with Haxe versions older than 4.2.5 when using Flixel 5.3, use Flixel 5.2.2 or lower.'
+		#end // flixel 5.3 support because y'all be tweaking with 4.2.4 😜
+		#end
+		#if html5
+		@:deprecated('wait WHY HTML5 :skull:')
+		throw "no html5 ports allowed, why the fuck is html5 being used";
+		#end
+	}
 }

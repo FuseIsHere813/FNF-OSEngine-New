@@ -15,11 +15,10 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import flixel.tweens.FlxTween;
 import lime.utils.Assets;
-#if (flixel < "5.3.0")
-import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
-#end
 #if (flixel >= "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
 #end
 import openfl.utils.Assets as OpenFlAssets;
 import WeekData;

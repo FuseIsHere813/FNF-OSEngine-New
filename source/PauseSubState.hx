@@ -7,11 +7,10 @@ import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
-#if (flixel < "5.3.0")
-import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
-#end
 #if (flixel >= "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
 #end
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -26,7 +25,7 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Options', 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Gameplay Changers', 'Options', 'Exit to menu'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -205,7 +204,11 @@ class PauseSubState extends MusicBeatSubstate
 					var poop = Highscore.formatSong(name, curSelected);
 					PlayState.SONG = Song.loadFromJson(poop, name);
 					PlayState.storyDifficulty = curSelected;
+					#if (flixel >= "5.6.0")
+					FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+					#else
 					MusicBeatState.resetState();
+					#end
 					FlxG.sound.music.volume = 0;
 					PlayState.changedDifficulty = true;
 					PlayState.chartingMode = false;
@@ -257,6 +260,9 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
 					PlayState.instance.botplayTxt.alpha = 1;
 					PlayState.instance.botplaySine = 0;
+				case 'Gameplay Changers':
+					close();
+					PlayState.instance.openChangersMenu();
 				case 'Options':
 					wasinsongbeforethenwenttooptions = true;
 					PlayState.deathCounter = 0;
@@ -305,7 +311,11 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		else
 		{
+			#if (flixel >= "5.6.0")
+			FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+			#else
 			MusicBeatState.resetState();
+			#end
 		}
 	}
 

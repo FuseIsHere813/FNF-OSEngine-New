@@ -31,12 +31,12 @@ import flixel.addons.effects.FlxTrailArea;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-#if (flixel < "5.3.0")
-import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
-#end
 #if (flixel >= "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
 #end
+
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -200,6 +200,7 @@ class PlayState extends MusicBeatState
 
 	public var gfSpeed:Int = 1;
 	public var health:Float = 1;
+	private var displayedHealth:Float = 1;
 	public var combo:Int = 0;
 
 	private var healthBarBG:AttachedSprite;
@@ -311,6 +312,9 @@ class PlayState extends MusicBeatState
 
 	var msTimeTxt:FlxText;
 	var msTimeTxtTween:FlxTween;
+
+	public var judgementCounter:FlxText;
+	public var judgementAlt:FlxText;
 	
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -592,9 +596,9 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			case 'hurricaneReal':
-				curStage = 'hurricaneReal';
-				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('veryfunny2ndtry'));
+			case 'wavy':
+				curStage = 'wavy';
+				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('wavyBackground'));
 				bg.scale.set(1.5, 1.5);
 				bg.antialiasing = true;
 				bg.scrollFactor.set(0.0, 0.0);
@@ -1258,8 +1262,14 @@ class PlayState extends MusicBeatState
 		add(healthBarBG);
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 
+		if (ClientPrefs.smoothBar == 'Default') {
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
+		}
+		if (ClientPrefs.smoothBar == 'Smooth') {
+			healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this, 
+			'displayedHealth', 0, 2);
+		}
 		healthBar.scrollFactor.set();
 		// healthBar
 		healthBar.visible = !ClientPrefs.hideHud;
@@ -1320,6 +1330,22 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
+		judgementCounter = new FlxText(20, 30, 0, "", 20); 
+		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); 
+		judgementCounter.borderSize = 2; 
+		judgementCounter.borderQuality = 2; 
+		judgementCounter.scrollFactor.set(); 
+		judgementCounter.screenCenter(Y); 
+		judgementCounter.text = 'Total Notes Hit: ${perfects + sicks + goods + bads + shits}\nCombo: ${combo}\n\nPerfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+
+		if (ClientPrefs.removePerfects) {
+			judgementCounter.text = 'Total Notes Hit: ${sicks + goods + bads + shits}\nCombo: ${combo}\n\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}'; 
+		}
+
+		if (ClientPrefs.judgementCounter) { 
+			add(judgementCounter);
+		}
+
 		if (ClientPrefs.scoreHUD == 'Simple') {
 		songTxt = new FlxText(12, FlxG.height - 24, 0, "", 8);
 		songTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -1347,7 +1373,11 @@ class PlayState extends MusicBeatState
 	    }
 
         if (ClientPrefs.watermarkType == 'Original') {
+			#if desktop
 		    songTxt.text = curSong + " (" + storyDifficultyText + ") " + "| OS " + MainMenuState.osEngineVersion;
+			#else
+			songTxt.text = curSong + "| OS " + MainMenuState.osEngineVersion;
+			#end
 		}
 		else if (ClientPrefs.watermarkType == 'Song + OS Ver.') {
 			songTxt.text = curSong + " | OS " + MainMenuState.osEngineVersion;
@@ -1374,6 +1404,7 @@ class PlayState extends MusicBeatState
 		doof.cameras = [camHUD];
 		laneunderlay.cameras = [camHUD];
 		laneunderlayOp.cameras = [camHUD];
+		judgementCounter.cameras = [camHUD];
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1595,7 +1626,8 @@ class PlayState extends MusicBeatState
 		CustomFadeTransition.nextCamera = camOther;
 
 		if (ClientPrefs.showcaseMode) {
-			camHUD.visible = false;
+			scoreTxt.visible = false;
+			botplayTxt.visible = false;
 			instance.cpuControlled = true;
 		}
 	}
@@ -1799,21 +1831,33 @@ class PlayState extends MusicBeatState
 					for(i in camHUDShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camHUD.setFilters(newCamEffects);
+					#else
+					camHUD.filters = newCamEffects;
+					#end
 			case 'camother' | 'other':
 					camOtherShaders.push(effect);
 					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
 					for(i in camOtherShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camOther.setFilters(newCamEffects);
+					#else
+					camOther.filters = newCamEffects;
+					#end
 			case 'camgame' | 'game':
 					camGameShaders.push(effect);
 					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
 					for(i in camGameShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camGame.setFilters(newCamEffects);
+					#else
+					camGame.filters = newCamEffects;
+					#end
 			default:
 				if(modchartSprites.exists(cam)) {
 					Reflect.setProperty(modchartSprites.get(cam),"shader",effect.shader);
@@ -1835,14 +1879,22 @@ class PlayState extends MusicBeatState
     for(i in camHUDShaders){
       newCamEffects.push(new ShaderFilter(i.shader));
     }
+	#if (flixel < "5.4.0")
     camHUD.setFilters(newCamEffects);
+	#else
+	camHUD.filters = newCamEffects;
+	#end
 			case 'camother' | 'other': 
 					camOtherShaders.remove(effect);
 					var newCamEffects:Array<BitmapFilter>=[];
 					for(i in camOtherShaders){
 					  newCamEffects.push(new ShaderFilter(i.shader));
 					}
+					#if (flixel < "5.4.0")
 					camOther.setFilters(newCamEffects);
+					#else
+					camOther.filters = newCamEffects;
+					#end
 			default: 
 				if(modchartSprites.exists(cam)) {
 					Reflect.setProperty(modchartSprites.get(cam),"shader",null);
@@ -1862,19 +1914,35 @@ class PlayState extends MusicBeatState
 			case 'camhud' | 'hud': 
 				camHUDShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camHUD.setFilters(newCamEffects);
+				#else
+				camHUD.filters = newCamEffects;
+				#end
 			case 'camother' | 'other': 
 				camOtherShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camOther.setFilters(newCamEffects);
+				#else
+				camOther.filters = newCamEffects;
+				#end
 			case 'camgame' | 'game': 
 				camGameShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camGame.setFilters(newCamEffects);
+				#else
+				camGame.filters = newCamEffects;
+				#end
 			default: 
 				camGameShaders = [];
 				var newCamEffects:Array<BitmapFilter>=[];
+				#if (flixel < "5.4.0")
 				camGame.setFilters(newCamEffects);
+				#else
+				camGame.filters = newCamEffects;
+				#end
 		}	
   }
 
@@ -3225,6 +3293,7 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		displayedHealth = FlxMath.lerp(displayedHealth, health, .2/(ClientPrefs.framerate / 60));
 
 		if(disableTheTripperAt == curStep)
 			{
@@ -3234,12 +3303,14 @@ class PlayState extends MusicBeatState
 			{
 				disableTheTripper = true;
 			}
-
+			#if (flixel < "5.4.0")
 			FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
+			#else
+			FlxG.camera.filters = [new ShaderFilter(screenshader.shader)];
+			#end
 			screenshader.update(elapsed);
 			if(disableTheTripper)
 			{
-				screenshader.Enabled = false;
 				screenshader.shader.uampmul.value[0] -= (elapsed / 2);
 			}
 
@@ -3531,12 +3602,6 @@ class PlayState extends MusicBeatState
 		}
 		doDeathCheck();
 
-		/*if (curSong.toLowerCase() == 'maybe-hurricane-5')
-		{
-			screenshader.shader.uampmul.value[0] = 0;
-			screenshader.Enabled = true;
-		}*/
-
 		if (unspawnNotes[0] != null)
 		{
 			var time:Float = spawnTime;
@@ -3744,6 +3809,19 @@ class PlayState extends MusicBeatState
 		DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
 	}
+
+	public function openChangersMenu()
+		{
+			persistentUpdate = false;
+			persistentDraw = true;
+			paused = true;
+
+			if(FlxG.sound.music != null) {
+				FlxG.sound.music.pause();
+				vocals.pause();
+			}
+			openSubState(new GameplayChangersSubstate());
+		}
 
 	function openChartEditor()
 	{
@@ -4215,7 +4293,11 @@ class PlayState extends MusicBeatState
 					var speedRainbow:Float = Std.parseFloat(value2);
 					disableTheTripper = false;
 					disableTheTripperAt = timeRainbow;
+					#if (flixel < "5.4.0")
 					FlxG.camera.setFilters([new ShaderFilter(screenshader.shader)]);
+					#else
+					FlxG.camera.filters = [new ShaderFilter(screenshader.shader)];
+					#end
 					screenshader.waveAmplitude = 1;
 					screenshader.waveFrequency = 2;
 					screenshader.waveSpeed = speedRainbow * playbackRate;
@@ -4588,7 +4670,8 @@ class PlayState extends MusicBeatState
 			pixelShitPart1 = 'pixelUI/';
 			pixelShitPart2 = '-pixel';
 		}
-
+		
+        if (!cpuControlled) {
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating.image + pixelShitPart2));
 		rating.cameras = [camHUD];
 		rating.screenCenter();
@@ -4734,6 +4817,7 @@ class PlayState extends MusicBeatState
 			startDelay: Conductor.crochet * 0.002 / playbackRate
 		});
 	}
+}
 
 	public var strumsBlocked:Array<Bool> = [];
 	private function onKeyPress(event:KeyboardEvent):Void
@@ -5740,6 +5824,10 @@ class PlayState extends MusicBeatState
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
+		judgementCounter.text = 'Total Notes Hit: ${perfects + sicks + goods + bads + shits}\nCombo: ${combo}\n\nPerfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		if (ClientPrefs.removePerfects) {
+		judgementCounter.text = 'Total Notes Hit: ${sicks + goods + bads + shits}\nCombo: ${combo}\n\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		}
 	}
 
 	#if ACHIEVEMENTS_ALLOWED

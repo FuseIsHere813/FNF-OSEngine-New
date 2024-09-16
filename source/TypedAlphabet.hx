@@ -6,11 +6,10 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
-#if (flixel < "5.3.0")
-import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
-#end
 #if (flixel >= "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
 #end
 import flash.media.Sound;
 

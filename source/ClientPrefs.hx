@@ -20,6 +20,9 @@ class ClientPrefs {
 	public static var showcaseMode:Bool = false;
 	public static var noteSkinSettings:String = 'Classic';
 	public static var watermarkType:String = 'Original';
+	public static var noteColorStyle:String = 'Normal';
+	public static var smoothBar:String = 'Default';
+	public static var judgementCounter:Bool = true;
 	// END
 	public static var downScroll:Bool = false;
 	public static var middleScroll:Bool = false;
@@ -158,7 +161,11 @@ class ClientPrefs {
 		FlxG.save.data.hideWatermark = hideWatermark;
 		FlxG.save.data.watermarkType = watermarkType;
 		FlxG.save.data.noteSkinSettings = noteSkinSettings;
+		FlxG.save.data.noteColorStyle = noteColorStyle;
+		FlxG.save.data.judgementCounter = judgementCounter;
+		FlxG.save.data.smoothBar = smoothBar;
 		// END
+		
 	
 		FlxG.save.flush();
 
@@ -226,6 +233,12 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.themedmainmenubg != null) {
 			themedmainmenubg = FlxG.save.data.themedmainmenubg;
+		}
+		if(FlxG.save.data.judgementCounter != null) {
+			judgementCounter = FlxG.save.data.judgementCounter;
+		}
+		if(FlxG.save.data.smoothBar != null) {
+			smoothBar = FlxG.save.data.smoothBar;
 		}
 		// END
 		if(FlxG.save.data.camZooms != null) {
@@ -309,6 +322,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.pauseMusic != null) {
 			pauseMusic = FlxG.save.data.pauseMusic;
+		}
+		if(FlxG.save.data.noteColorStyle != null) {
+			noteColorStyle = FlxG.save.data.noteColorStyle;
 		}
 		if(FlxG.save.data.gameplaySettings != null)
 		{

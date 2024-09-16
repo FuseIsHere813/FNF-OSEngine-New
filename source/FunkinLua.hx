@@ -17,11 +17,10 @@ import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxPoint;
-#if (flixel < "5.3.0")
-import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
-#end
-#if (flixel > "5.3.0")
+#if (flixel >= "5.3.0")
 import flixel.sound.FlxSound;
+#else
+import flixel.system.FlxSound; // this will fix the flixel.system.sound being moved error
 #end
 import flixel.util.FlxTimer;
 import flixel.FlxSprite;
@@ -2782,7 +2781,7 @@ class FunkinLua {
 		// deprecated shaders
 
 		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String,chromeOffset:Float = 0.005) {
-
+			//PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
 			luaTrace('addChromaticAbberationEffect is deprecated in favor of Runtime Shaders!', false, true);
 		});
 		
