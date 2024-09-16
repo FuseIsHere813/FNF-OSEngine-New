@@ -21,6 +21,7 @@ class ClientPrefs {
 	public static var noteSkinSettings:String = 'Classic';
 	public static var watermarkType:String = 'Original';
 	public static var noteColorStyle:String = 'Normal';
+	public static var smoothBar:String = 'Default';
 	public static var judgementCounter:Bool = true;
 	// END
 	public static var downScroll:Bool = false;
@@ -162,6 +163,7 @@ class ClientPrefs {
 		FlxG.save.data.noteSkinSettings = noteSkinSettings;
 		FlxG.save.data.noteColorStyle = noteColorStyle;
 		FlxG.save.data.judgementCounter = judgementCounter;
+		FlxG.save.data.smoothBar = smoothBar;
 		// END
 		
 	
@@ -234,6 +236,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.judgementCounter != null) {
 			judgementCounter = FlxG.save.data.judgementCounter;
+		}
+		if(FlxG.save.data.smoothBar != null) {
+			smoothBar = FlxG.save.data.smoothBar;
 		}
 		// END
 		if(FlxG.save.data.camZooms != null) {

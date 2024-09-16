@@ -28,6 +28,39 @@ class FlxFrame implements IFlxDestroyable
 	 * `["tiles-001.png", "tiles-003.png", "tiles-002.png"]`
 	 * with `"tiles-".length == prefixLength` and `".png".length == postfixLength`.
 	 */
+
+	#if (flixel >= "5.6.0")
+	public static inline function sortFrames(frames:Array<FlxFrame>, prefix:String, ?suffix:String, warn = true):Void
+	{
+		sortHelper(frames, prefix.length, suffix == null ? 0 : suffix.length, warn);
+	}
+
+	static function sortHelper(frames:Array<FlxFrame>, prefixLength:Int, suffixLength:Int, warn = true):Void
+		{
+			if (warn)
+			{
+				for (frame in frames)
+					checkValidName(frame.name, prefixLength, suffixLength);
+			}
+			
+			ArraySort.sort(frames, sortByName.bind(_, _, prefixLength, suffixLength));
+		}
+
+	static inline function checkValidName(name:String, prefixLength:Int, suffixLength:Int)
+	{
+		final nameSub = name.substring(prefixLength, name.length - suffixLength);
+		final num:Null<Int> = Std.parseInt(nameSub);
+		if (num == null)
+			FlxG.log.warn('Could not parse frame number of "$nameSub" in frame named "$name"');
+		else if (num < 0)
+			FlxG.log.warn('Found negative frame number "$nameSub" in frame named "$name"');
+	}
+	#else
+	#if (haxe == "4.2.4")
+	@:deprecated('this does NOT mamma the mia.')
+	#end
+	#end
+
 	public static function sort(frames:Array<FlxFrame>, prefixLength:Int, postfixLength:Int):Void
 	{
 		ArraySort.sort(frames, sortByName.bind(_, _, prefixLength, postfixLength));

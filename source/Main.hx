@@ -56,7 +56,17 @@ class Main extends Sprite
 		"my bad, i feel disappointed too",
 		"so you see... after the engine crashed i had no bitches",
 		"hi fellow lime test windows user!",
-		"psst.. this engine is the community update for os..."
+		"psst.. this engine is the community update for os...",
+		"H",
+		"nonono not now this engine was invinci- wait, this engine WASN'T invinicble before :fearful:",
+		"zoinks",
+		"The object does not the property 'XBOX LIVE!!!'",
+		"this does not null my reference.",
+		"why is the fbi at my door",
+		'Uncaught Error: sorry, I already had bitches',
+		"wanna play some ping pong",
+		"null FORTNITE BALLS reference",
+		"the best error message is right here, the 69th line WOW HEHEHEHA I AM FUNNI!11!11!!!!!"
 	];
 
 	public static function main():Void
@@ -67,8 +77,6 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
-
-		dubBossman();
 
 		if (stage != null)
 		{
@@ -87,25 +95,8 @@ class Main extends Sprite
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 		}
 
-		#if (flixel >= "5.3.0")
-		#if (haxe < "4.2.5")
-		#error '"OS Engine 1.6" is not compatible with Haxe versions older than 4.2.5 when using Flixel 5.3, use Flixel 5.2.2 or lower.'
-		#end // flixel 5.3 support because y'all be tweaking with 4.2.4 😜
-		#end
-
 		setupGame();
 	}
-
-	
-	public function dubBossman() // testing shit
-		{
-			#if (flixel < "5.2.2")
-			trace('i think you deserve a huge W blud (flixel 5.2.2 or below found)');
-			#if (haxe < "4.2.5")
-			trace('nice haxe version (4.2.4 or below found)');
-			#end
-			#end
-		}
 
 	private function setupGame():Void
 	{
@@ -180,7 +171,7 @@ class Main extends Sprite
 			FileSystem.createDirectory("./crash/");
 
 		File.saveContent(path, 
-			"Error! (" + Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n" + errMsg + "\n");
+			"Error! (" + Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n\n" + errMsg + "\n");
 
 		Sys.println("Uncaught Exception! (" + 
 		Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n");
@@ -193,14 +184,16 @@ class Main extends Sprite
 		Sys.exit(1);
 	}
 	#end
-}
 
-#if nothing
-	/*var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
-	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
-	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-	var framerate:Int = 60; // How many frames per second the game should run at.
-	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
-	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets*/
-#end
+	function versionChecking() {
+		#if (flixel >= "5.3.0")
+		#if (haxe < "4.2.5")
+		#error '"OS Engine 1.6" is not compatible with Haxe versions older than 4.2.5 when using Flixel 5.3, use Flixel 5.2.2 or lower.'
+		#end // flixel 5.3 support because y'all be tweaking with 4.2.4 😜
+		#end
+		#if html5
+		@:deprecated('wait WHY HTML5 :skull:')
+		throw "no html5 ports allowed, why the fuck is html5 being used";
+		#end
+	}
+}

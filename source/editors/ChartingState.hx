@@ -516,7 +516,11 @@ class ChartingState extends MusicBeatState
 		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', function()
 		{
 			PlayState.SONG = Song.parseJSONshit(FlxG.save.data.autosave);
+			#if (flixel >= "5.6.0")
+			FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+			#else
 			MusicBeatState.resetState();
+			#end
 		});
 
 		var loadEventJson:FlxButton = new FlxButton(loadAutosaveBtn.x, loadAutosaveBtn.y + 30, 'Load Events', function()
@@ -613,7 +617,7 @@ class ChartingState extends MusicBeatState
 		stepperBPM.name = 'song_bpm';
 		blockPressWhileTypingOnStepper.push(stepperBPM);
 
-		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, stepperBPM.y + 35, 0.1, 1, 0.1, 10, 1);
+		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, stepperBPM.y + 35, 0.1, 1, 0.1, 100, 1);
 		stepperSpeed.value = _song.speed;
 		stepperSpeed.name = 'song_speed';
 		blockPressWhileTypingOnStepper.push(stepperSpeed);
@@ -2796,6 +2800,9 @@ class ChartingState extends MusicBeatState
 
 	function resetSection(songBeginning:Bool = false):Void
 	{
+		lilBf.animation.play("idle");
+		lilOpp.animation.play("idle");
+		
 		updateGrid();
 
 		FlxG.sound.music.pause();
@@ -3352,7 +3359,11 @@ class ChartingState extends MusicBeatState
 					}
 				}
 				else PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
+				#if (flixel >= "5.6.0")
+				FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+				#else
 				MusicBeatState.resetState();
+				#end
 			}
 			catch(e)
 			{
@@ -3380,49 +3391,6 @@ class ChartingState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('holyNO'));
 			}
 		}
-
-			/*function loadJson(song:String):Void
-	{
-		//shitty null fix, i fucking hate it when this happens
-		//make it look sexier if possible
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != CoolUtil.defaultDifficulty) {
-			if(CoolUtil.difficulties[PlayState.storyDifficulty] == null){
-				PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
-			}else{
-				PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-" + CoolUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
-			}
-		}else{
-		PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
-		}
-		MusicBeatState.resetState();
-	}
-	
-	catch(e) // Credits to Psych 0.7
-		{
-			trace('ERROR! $e');
-
-			var errorStr:String = e.toString();
-			if(errorStr.startsWith('[file_contents,assets/data/')) errorStr = 'Missing file: ' + errorStr.substring(27, errorStr.length-1); //Missing chart
-			
-			if(missingText == null)
-			{
-				missingText = new FlxText(50, 0, FlxG.width - 100, '', 24);
-				missingText.setFormat(Paths.font("vcr.ttf"), 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-				missingText.scrollFactor.set();
-				add(missingText);
-			}
-			else missingTextTimer.cancel();
-
-			missingText.text = 'ERROR WHILE LOADING CHART:\n$errorStr';
-			missingText.screenCenter(Y);
-
-			missingTextTimer = new FlxTimer().start(5, function(tmr:FlxTimer) {
-				remove(missingText);
-				missingText.destroy();
-			});
-			FlxG.sound.play(Paths.sound('holyNO'));
-		}
-    }*/
 
 	function autosaveSong():Void
 	{

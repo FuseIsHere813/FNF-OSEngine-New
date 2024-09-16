@@ -688,11 +688,19 @@ class FlxAnimationController implements IFlxDestroyable
 	{
 		for (frameName in FrameNames)
 		{
+			#if (flixel < "5.4.0")
 			if (_sprite.frames.framesHash.exists(frameName))
 			{
 				var frameToAdd:FlxFrame = _sprite.frames.framesHash.get(frameName);
 				AddTo.push(getFrameIndex(frameToAdd));
 			}
+			#else
+			if (_sprite.frames.exists(frameName))
+				{
+					var frameToAdd = _sprite.frames.getByName(frameName);
+					AddTo.push(getFrameIndex(frameToAdd));
+				}
+			#end
 		}
 	}
 
@@ -700,12 +708,21 @@ class FlxAnimationController implements IFlxDestroyable
 	{
 		for (index in Indices)
 		{
+			#if (flixel < "5.4.0")
 			var name:String = Prefix + index + Postfix;
 			if (_sprite.frames.framesHash.exists(name))
 			{
 				var frameToAdd:FlxFrame = _sprite.frames.framesHash.get(name);
 				AddTo.push(getFrameIndex(frameToAdd));
 			}
+			#else
+			final name = Prefix + index + Postfix;
+			if (_sprite.frames.exists(name))
+			{
+				final frameToAdd = _sprite.frames.getByName(name);
+				AddTo.push(getFrameIndex(frameToAdd));
+			}
+			#end
 		}
 	}
 
@@ -765,7 +782,11 @@ class FlxAnimationController implements IFlxDestroyable
 
 	function set_frameName(Value:String):String
 	{
+		#if (flixel < "5.4.0")
 		if (_sprite.frames != null && _sprite.frames.framesHash.exists(Value))
+		#else
+		if (_sprite.frames != null && _sprite.frames.exists(Value))
+		#end
 		{
 			if (_curAnim != null)
 			{
@@ -773,7 +794,11 @@ class FlxAnimationController implements IFlxDestroyable
 				_curAnim = null;
 			}
 
+			#if (flixel < "5.4.0")
 			var frame = _sprite.frames.framesHash.get(Value);
+			#else
+			var frame = _sprite.frames.getByName(Value);
+			#end
 			if (frame != null)
 			{
 				frameIndex = getFrameIndex(frame);

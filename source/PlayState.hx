@@ -200,6 +200,7 @@ class PlayState extends MusicBeatState
 
 	public var gfSpeed:Int = 1;
 	public var health:Float = 1;
+	private var displayedHealth:Float = 1;
 	public var combo:Int = 0;
 
 	private var healthBarBG:AttachedSprite;
@@ -595,9 +596,9 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-			case 'hurricaneReal':
-				curStage = 'hurricaneReal';
-				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('veryfunny2ndtry'));
+			case 'wavy':
+				curStage = 'wavy';
+				var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('wavyBackground'));
 				bg.scale.set(1.5, 1.5);
 				bg.antialiasing = true;
 				bg.scrollFactor.set(0.0, 0.0);
@@ -1261,8 +1262,14 @@ class PlayState extends MusicBeatState
 		add(healthBarBG);
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 
+		if (ClientPrefs.smoothBar == 'Default') {
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
+		}
+		if (ClientPrefs.smoothBar == 'Smooth') {
+			healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this, 
+			'displayedHealth', 0, 2);
+		}
 		healthBar.scrollFactor.set();
 		// healthBar
 		healthBar.visible = !ClientPrefs.hideHud;
@@ -1323,16 +1330,16 @@ class PlayState extends MusicBeatState
 			botplayTxt.y = timeBarBG.y - 78;
 		}
 
-		judgementCounter = new FlxText(20, 0, 0, "", 20); 
+		judgementCounter = new FlxText(20, 30, 0, "", 20); 
 		judgementCounter.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK); 
 		judgementCounter.borderSize = 2; 
 		judgementCounter.borderQuality = 2; 
 		judgementCounter.scrollFactor.set(); 
 		judgementCounter.screenCenter(Y); 
-		judgementCounter.text = 'Perfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		judgementCounter.text = 'Total Notes Hit: ${perfects + sicks + goods + bads + shits}\nCombo: ${combo}\n\nPerfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
 
 		if (ClientPrefs.removePerfects) {
-			judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}'; 
+			judgementCounter.text = 'Total Notes Hit: ${sicks + goods + bads + shits}\nCombo: ${combo}\n\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}'; 
 		}
 
 		if (ClientPrefs.judgementCounter) { 
@@ -3286,6 +3293,7 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		displayedHealth = FlxMath.lerp(displayedHealth, health, .2/(ClientPrefs.framerate / 60));
 
 		if(disableTheTripperAt == curStep)
 			{
@@ -3593,12 +3601,6 @@ class PlayState extends MusicBeatState
 			trace("RESET = True");
 		}
 		doDeathCheck();
-
-		/*if (curSong.toLowerCase() == 'maybe-hurricane-5')
-		{
-			screenshader.shader.uampmul.value[0] = 0;
-			screenshader.Enabled = true;
-		}*/
 
 		if (unspawnNotes[0] != null)
 		{
@@ -5822,9 +5824,9 @@ class PlayState extends MusicBeatState
 		setOnLuas('rating', ratingPercent);
 		setOnLuas('ratingName', ratingName);
 		setOnLuas('ratingFC', ratingFC);
-		judgementCounter.text = 'Perfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		judgementCounter.text = 'Total Notes Hit: ${perfects + sicks + goods + bads + shits}\nCombo: ${combo}\n\nPerfects: ${perfects}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
 		if (ClientPrefs.removePerfects) {
-		judgementCounter.text = 'Sicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
+		judgementCounter.text = 'Total Notes Hit: ${sicks + goods + bads + shits}\nCombo: ${combo}\n\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nMisses: ${songMisses}';
 		}
 	}
 

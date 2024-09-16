@@ -204,7 +204,11 @@ class PauseSubState extends MusicBeatSubstate
 					var poop = Highscore.formatSong(name, curSelected);
 					PlayState.SONG = Song.loadFromJson(poop, name);
 					PlayState.storyDifficulty = curSelected;
+					#if (flixel >= "5.6.0")
+					FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+					#else
 					MusicBeatState.resetState();
+					#end
 					FlxG.sound.music.volume = 0;
 					PlayState.changedDifficulty = true;
 					PlayState.chartingMode = false;
@@ -307,7 +311,11 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		else
 		{
+			#if (flixel >= "5.6.0")
+			FlxG.resetState(); // can't make it act like the original fnf because no transition shit please help me AUGH-
+			#else
 			MusicBeatState.resetState();
+			#end
 		}
 	}
 

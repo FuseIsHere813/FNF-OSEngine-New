@@ -92,6 +92,14 @@ class VisualsUISubState extends BaseOptionsMenu
 			['Original', 'Song + OS Ver.', 'Song Only']);
 		addOption(option);
 
+		var option:Option = new Option('Health Bar',
+			'You can choose either between the default health bar animation, or the smooth animations.',
+			'smoothBar',
+			'string',
+			'Default',
+			['Default', 'Smooth']);
+		addOption(option);
+
 		var option:Option = new Option('Icon Bops:',
 			'"Classic" enables the vanilla icon bops,\nwhile "OS" enabled the modified icon bops.',
 			'iconbops',
