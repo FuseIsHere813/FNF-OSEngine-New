@@ -7,6 +7,9 @@ import Discord.DiscordClient;
 import Section.SwagSection;
 import Song.SwagSong;
 import WiggleEffect.WiggleEffectType;
+import openfl.display.Shader;
+import openfl.filters.ShaderFilter;
+import Shaders;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import Shaders.PulseEffect;
@@ -106,6 +109,11 @@ class PlayState extends MusicBeatState
 		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
 	];
 
+	public var shader_chromatic_abberation:ChromaticAberrationEffect;
+	public var camGameShaders:Array<ShaderEffect> = [];
+	public var camHUDShaders:Array<ShaderEffect> = [];
+	public var camOtherShaders:Array<ShaderEffect> = [];
+
 	//event variables
 	private var isCameraOnForcedPos:Bool = false;
 
@@ -120,9 +128,6 @@ class PlayState extends MusicBeatState
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
 	public var modchartTexts:Map<String, ModchartText> = new Map<String, ModchartText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
-	public var camGameShaders:Array<ShaderEffect> = [];
-	public var camHUDShaders:Array<ShaderEffect> = [];
-	public var camOtherShaders:Array<ShaderEffect> = [];
 	#else
 	public var boyfriendMap:Map<String, Boyfriend> = new Map<String, Boyfriend>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
@@ -134,9 +139,6 @@ class PlayState extends MusicBeatState
 	public var modchartSounds:Map<String, FlxSound> = new Map();
 	public var modchartTexts:Map<String, ModchartText> = new Map();
 	public var modchartSaves:Map<String, FlxSave> = new Map();
-	public var camGameShaders:Array<ShaderEffect> = [];
-	public var camHUDShaders:Array<ShaderEffect> = [];
-	public var camOtherShaders:Array<ShaderEffect> = [];
 	#end
 
 	public var BF_X:Float = 770;
@@ -293,7 +295,7 @@ class PlayState extends MusicBeatState
 	var tankmanRun:FlxTypedGroup<TankmenBG>;
 	var foregroundSprites:FlxTypedGroup<BGSprite>;
 
-	public static var screenshader:Shaders.PulseEffect = new PulseEffect();
+	public static var screenshader:Shaders.PulseEffectAlt = new PulseEffectAlt();
 
 	var disableTheTripper:Bool = false;
 	var disableTheTripperAt:Int;
@@ -372,11 +374,11 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		screenshader.waveAmplitude = 1;
+		/*screenshader.waveAmplitude = 1;
 		screenshader.waveFrequency = 2;
 		screenshader.waveSpeed = 1;
 		screenshader.shader.uTime.value[0] = new flixel.math.FlxRandom().float(-100000, 100000);
-		screenshader.shader.uampmul.value[0] = 0;
+		screenshader.shader.uampmul.value[0] = 0;*/
 		
 		//trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
@@ -3295,7 +3297,7 @@ class PlayState extends MusicBeatState
 	{
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .2/(ClientPrefs.framerate / 60));
 
-		if(disableTheTripperAt == curStep)
+		/*if(disableTheTripperAt == curStep)
 			{
 				disableTheTripper = true;
 			}
@@ -3312,7 +3314,7 @@ class PlayState extends MusicBeatState
 			if(disableTheTripper)
 			{
 				screenshader.shader.uampmul.value[0] -= (elapsed / 2);
-			}
+			}*/
 
 		callOnLuas('onUpdate', [elapsed]);
 
@@ -3778,10 +3780,10 @@ class PlayState extends MusicBeatState
 		setOnLuas('cameraY', camFollowPos.y);
 		setOnLuas('botPlay', cpuControlled);
 		callOnLuas('onUpdatePost', [elapsed]);
-
-		for (i in shaderUpdates){
-			i(elapsed);
-		}
+		if (shaderUpdates.length > 0)
+			for (i in shaderUpdates){
+				i(elapsed);
+			}
 	}
 
 	function openPauseMenu()
@@ -4288,7 +4290,9 @@ class PlayState extends MusicBeatState
 					FunkinLua.setVarInArray(this, value1, value2);
 				}
 			case 'Rainbow Eyesore':
-				if(ClientPrefs.flashing && ClientPrefs.shaders) {
+				trace("don't do dat");
+				throw 'Eyesores are currently conflicting with Runtime Shaders, try the event again in another update.';
+				/*if(ClientPrefs.flashing && ClientPrefs.shaders) {
 					var timeRainbow:Int = Std.parseInt(value1);
 					var speedRainbow:Float = Std.parseFloat(value2);
 					disableTheTripper = false;
@@ -4304,7 +4308,7 @@ class PlayState extends MusicBeatState
 					screenshader.shader.uTime.value[0] = new flixel.math.FlxRandom().float(-100000, 100000);
 					screenshader.shader.uampmul.value[0] = 1;
 					screenshader.Enabled = true;
-				}
+				}*/
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}

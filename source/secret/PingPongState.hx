@@ -45,10 +45,10 @@ class PingPongState extends MusicBeatState {
 
         function dieASDF()
         {
+            trace('tf it crashed the game what');
             var e:MusicBeatState = null;
             @:privateAccess
             e.update(0);
-            trace('tf it crashed the game what');
         }
     }
 
