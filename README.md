@@ -37,7 +37,8 @@ If you get an error about StatePointer when using Lua, run `haxelib remove linc_
 * PolybiusProxy - .MP4 Video Loader Library (hxCodec)
 * Keoiki - Note Splash Animations
 * Smokey - Sprite Atlas Support
-* Nebula the Zorua - LUA JIT Fork and some Lua reworks & VCR Shader code
+* superpowers04 - Current LuaJIT Fork
+* Nebula the Zorua - Global Mods, Lua reworks, VCR Shader code
 _____________________________________
 
 ## OS Engine Features
