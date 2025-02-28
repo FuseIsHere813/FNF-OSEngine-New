@@ -1,3 +1,5 @@
+### this engine sucks! use [JS Engine](https://github.com/JordanSantiagoYT/FNF-JS-Engine) instead? LMAO
+
 ![](https://pbs.twimg.com/media/GUgvjl2XoAA7nyC?format=jpg&name=small)
 ### *Guess how many OS Engine forks I saw Marge? 160!* - Homer J. Simpson
 
