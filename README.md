@@ -1,3 +1,5 @@
+### this engine sucks! use [JS Engine](https://github.com/JordanSantiagoYT/FNF-JS-Engine) instead? LMAO
+
 ![](https://pbs.twimg.com/media/GUgvjl2XoAA7nyC?format=jpg&name=small)
 ### *Guess how many OS Engine forks I saw Marge? 160!* - Homer J. Simpson
 
@@ -37,7 +39,8 @@ If you get an error about StatePointer when using Lua, run `haxelib remove linc_
 * PolybiusProxy - .MP4 Video Loader Library (hxCodec)
 * Keoiki - Note Splash Animations
 * Smokey - Sprite Atlas Support
-* Nebula the Zorua - LUA JIT Fork and some Lua reworks & VCR Shader code
+* Nebula the Zorua - Old/Former LuaJIT Fork, Global Mods, Lua reworks, VCR Shader code
+* superpowers04 - For the New/Current LuaJIT fork
 _____________________________________
 
 ## OS Engine Features
