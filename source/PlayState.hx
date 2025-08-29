@@ -374,11 +374,11 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		/*screenshader.waveAmplitude = 1;
+		screenshader.waveAmplitude = 1;
 		screenshader.waveFrequency = 2;
 		screenshader.waveSpeed = 1;
 		screenshader.shader.uTime.value[0] = new flixel.math.FlxRandom().float(-100000, 100000);
-		screenshader.shader.uampmul.value[0] = 0;*/
+		screenshader.shader.uampmul.value[0] = 0;
 		
 		//trace('Playback Rate: ' + playbackRate);
 		Paths.clearStoredMemory();
@@ -3297,7 +3297,7 @@ class PlayState extends MusicBeatState
 	{
 		displayedHealth = FlxMath.lerp(displayedHealth, health, .2/(ClientPrefs.framerate / 60));
 
-		/*if(disableTheTripperAt == curStep)
+		if(disableTheTripperAt == curStep)
 			{
 				disableTheTripper = true;
 			}
@@ -3314,7 +3314,7 @@ class PlayState extends MusicBeatState
 			if(disableTheTripper)
 			{
 				screenshader.shader.uampmul.value[0] -= (elapsed / 2);
-			}*/
+			}
 
 		callOnLuas('onUpdate', [elapsed]);
 
@@ -4291,8 +4291,8 @@ class PlayState extends MusicBeatState
 				}
 			case 'Rainbow Eyesore':
 				trace("don't do dat");
-				throw 'Eyesores are currently conflicting with Runtime Shaders, try the event again in another update.';
-				/*if(ClientPrefs.flashing && ClientPrefs.shaders) {
+				//throw 'Eyesores are currently conflicting with Runtime Shaders, try the event again in another update.';
+				if(ClientPrefs.flashing && ClientPrefs.shaders) {
 					var timeRainbow:Int = Std.parseInt(value1);
 					var speedRainbow:Float = Std.parseFloat(value2);
 					disableTheTripper = false;
@@ -4308,7 +4308,7 @@ class PlayState extends MusicBeatState
 					screenshader.shader.uTime.value[0] = new flixel.math.FlxRandom().float(-100000, 100000);
 					screenshader.shader.uampmul.value[0] = 1;
 					screenshader.Enabled = true;
-				}*/
+				}
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
