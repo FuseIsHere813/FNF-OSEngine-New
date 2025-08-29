@@ -18,5 +18,5 @@ export/*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-.Access.lnk
-source/flixel/temp files
+source/flixel/temp files/
+source/ShadersOld.hx
