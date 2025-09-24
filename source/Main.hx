@@ -66,7 +66,8 @@ class Main extends Sprite
 		'Uncaught Error: sorry, I already had bitches',
 		"wanna play some ping pong",
 		"null FORTNITE BALLS reference",
-		"the best error message is right here, the 69th line WOW HEHEHEHA I AM FUNNI!11!11!!!!!"
+		"the best error message is right here, the 69th line WOW HEHEHEHA I AM FUNNI!11!11!!!!!",
+		'wow... ok.. welcome to the "zone"!'
 	];
 
 	public static function main():Void
@@ -177,19 +178,17 @@ class Main extends Sprite
 		Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n");
 		Sys.println(e.error + "\n");
 		Sys.println(theStack);
-		Sys.println("The engine has saved a crash log to " + Path.normalize(path) + ".\nSend that when making a GitHub issue necessarily!"); // Command Prompt Error Log: Overhauled
+		Sys.println("The engine has saved a crash log to " + Path.normalize(path) + ".\nIf you're making a GitHub issue, then you might want to send that!"); // Command Prompt Error Log: Overhauled
 
-		Application.current.window.alert(errMsg, "Error!" + " OS Engine v" + MainMenuState.osEngineVersion);
+		Application.current.window.alert(errMsg, "Error!" + " OS Engine v" + MainMenuState.osEngineVersion) + " (" + Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")";
 		DiscordClient.shutdown();
 		Sys.exit(1);
 	}
 	#end
 
 	function versionChecking() {
-		#if (flixel >= "5.3.0")
-		#if (haxe < "4.2.5")
-		#error '"OS Engine 1.6" is not compatible with Haxe versions older than 4.2.5 when using Flixel 5.3, use Flixel 5.2.2 or lower.'
-		#end // flixel 5.3 support because y'all be tweaking with 4.2.4 😜
+		#if (flixel >= "5.6.0")
+		#error "You are unable to compile."
 		#end
 		#if html5
 		@:deprecated('wait WHY HTML5 :skull:')
