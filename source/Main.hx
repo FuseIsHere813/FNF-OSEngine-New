@@ -67,7 +67,7 @@ class Main extends Sprite
 		"wanna play some ping pong",
 		"null FORTNITE BALLS reference",
 		"the best error message is right here, the 69th line WOW HEHEHEHA I AM FUNNI!11!11!!!!!",
-		'wow... ok.. welcome to the "zone"!'
+		"wow... ok.. welcome to the zone, ig!"
 	];
 
 	public static function main():Void
