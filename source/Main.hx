@@ -67,7 +67,7 @@ class Main extends Sprite
 		"wanna play some ping pong",
 		"null FORTNITE BALLS reference",
 		"the best error message is right here, the 69th line WOW HEHEHEHA I AM FUNNI!11!11!!!!!",
-		"wow... ok.. welcome to the zone, ig!"
+		"wow... ok then. welcome to the 'zone'!"
 	];
 
 	public static function main():Void
@@ -174,13 +174,13 @@ class Main extends Sprite
 		File.saveContent(path, 
 			"Error! (" + Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n\n" + errMsg + "\n");
 
-		Sys.println("Uncaught Exception! (" + 
+        Sys.println("Uncaught Exception! (" + 
 		Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")\n");
 		Sys.println(e.error + "\n");
 		Sys.println(theStack);
 		Sys.println("The engine has saved a crash log to " + Path.normalize(path) + ".\nIf you're making a GitHub issue, then you might want to send that!"); // Command Prompt Error Log: Overhauled
 
-		Application.current.window.alert(errMsg, "Error!" + " OS Engine v" + MainMenuState.osEngineVersion) + " (" + Main.awesomeCoolSecret[FlxG.random.int(0, Main.awesomeCoolSecret.length)] + ")";
+		Application.current.window.alert(errMsg, "Error!" + " OS Engine v" + MainMenuState.osEngineVersion);
 		DiscordClient.shutdown();
 		Sys.exit(1);
 	}
